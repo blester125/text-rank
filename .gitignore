@@ -1,0 +1,5 @@
+.python-version
+dist/*
+build/*
+*.egg*
+__pycache__/
