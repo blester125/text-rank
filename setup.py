@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = "0.0.1"
+version = "0.1.0"
 
 setup(
     name="text_rank",
@@ -12,4 +12,16 @@ setup(
     download_url=f"https://github.com/blester125/text_rank/archive/{version}.tar.gz",
     license="MIT",
     packages=find_packages(),
+    package_data={
+        'text_rank': [
+            'text_rank/data/Automatic_Summarization-sents.json',
+            'text_rank/data/Automatic_Summarization-tokens.json',
+        ],
+    },
+    include_package_data=True,
+    install_requires=[
+        'numpy',
+        'tqdm',
+    ],
+    keywords=['NLP']
 )

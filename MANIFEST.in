@@ -1,0 +1,2 @@
+include text_rank/data/Automatic_Summarization-sents.json
+include text_rank/data/Automatic_Summarization-tokens.json
