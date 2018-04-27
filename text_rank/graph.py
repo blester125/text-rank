@@ -2,7 +2,7 @@ import re
 from math import log
 from itertools import combinations
 import numpy as np
-from scipy.sparse import lil_matrix, random
+#from scipy.sparse import lil_matrix, random
 
 
 class Vertex:
