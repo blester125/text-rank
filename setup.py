@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 class About(object):
     NAME='text_rank'
-    VERSION='0.2.0'
+    VERSION='0.2.1'
     AUTHOR='blester125'
     EMAIL=f'{AUTHOR}@gmail.com'
     URL=f'https://github.com/{AUTHOR}/{NAME}'
