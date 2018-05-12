@@ -1,3 +1,5 @@
+__version__ = '0.2.2'
+
 from text_rank.graph import sentence_graph, keyword_graph
 from text_rank.text_rank import text_rank
 
