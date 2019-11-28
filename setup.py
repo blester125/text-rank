@@ -37,18 +37,27 @@ setup(
     packages=find_packages(),
     package_data={
         'text_rank': [
-            'text_rank/data/Automatic_Summarization-sents.json',
-            'text_rank/data/Automatic_Summarization-tokens.json',
+            'text_rank/data/automatic-summarization-sents.json',
+            'text_rank/data/automatic-summarization-tokens.json',
+            'text_rank/data/paper-example-keywords.json',
+            'text_rank/data/paper-example-summarize.json',
         ],
     },
     include_package_data=True,
     install_requires=[
         'numpy',
-        'tqdm',
     ],
     setup_requires=[
     ],
+    extras_require={
+        'test': ['pytest'],
+    },
     keywords=["NLP"],
+    entry_points={
+        'console_scripts': [
+            'text-rank-demo = text_rank.main:main',
+        ],
+    },
     ext_modules=ext_modules,
     classifiers={
         'Development Status :: 3 - Alpha',
