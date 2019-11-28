@@ -10,35 +10,36 @@ def main():
     parser.add_argument("--iters", "-i", type=int, default=40)
     parser.add_argument("--sents", "-s", type=int, default=3)
     parser.add_argument("--words", "-w", type=int, default=5)
+    parser.add_argument("--verbose", "-v", action="store_true")
     args = parser.parse_args()
 
     sentences = json.load(open(DEMO_LOC / "Automatic_Summarization-sents.json"))
     G = sentence_graph(sentences)
-    sents1 = text_rank(G, args.iters)
+    sents = text_rank(G, args.iters, quiet=not args.verbose)
     print("Adjacency Matrix based Text Rank for extractive summarization")
-    for i, x in enumerate(sents1[: args.sents]):
+    for i, x in enumerate(sents[: args.sents]):
         print(f" {i + 1}. {x[0]}")
 
     G = sentence_graph(sentences, GraphType=AdjacencyList)
-    sents2 = text_rank(G, args.iters)
+    sents = text_rank(G, args.iters, quiet=not args.verbose)
     print()
     print("Adjacency List based Text Rank for extractive summarization")
-    for i, x in enumerate(sents2[: args.sents]):
+    for i, x in enumerate(sents[: args.sents]):
         print(f" {i + 1}. {x[0]}")
 
     tokens = json.load(open(DEMO_LOC / "Automatic_Summarization-tokens.json"))
     G = keyword_graph(tokens)
-    keywords1 = text_rank(G, args.iters)
+    keywords = text_rank(G, args.iters, quiet=not args.verbose)
     print()
     print("Adjacency Matrix based Text Rank for key-word extraction")
-    for i, x in enumerate(keywords1[: args.words]):
+    for i, x in enumerate(keywords[: args.words]):
         print(f" {i + 1}. {x[0]}")
 
-    G2 = keyword_graph(tokens, GraphType=AdjacencyList)
-    keywords2 = text_rank(G2, args.iters)
+    G = keyword_graph(tokens, GraphType=AdjacencyList)
+    keywords = text_rank(G, args.iters, quiet=not args.verbose)
     print()
     print("Adjacency List based Text Rank for key-word extraction")
-    for i, x in enumerate(keywords2[: args.words]):
+    for i, x in enumerate(keywords[: args.words]):
         print(f" {i + 1}. {x[0]}")
 
 
