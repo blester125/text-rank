@@ -48,7 +48,16 @@ setup(
     ],
     setup_requires=[
     ],
+    extra_require={
+        'viz': ['networkx', 'matplotlib', 'pygraphviz'],
+        'test': ['pytest'],
+    },
     keywords=["NLP"],
+    entry_points={
+        'console_scripts': [
+            'text-rank-demo = text_rank.main:main',
+        ],
+    },
     ext_modules=ext_modules,
     classifiers={
         'Development Status :: 3 - Alpha',
