@@ -43,7 +43,7 @@ def text_rank_list(
 def text_rank_matrix(
     graph: AdjacencyMatrix, niter: int = 200, dampening: float = 0.85, quiet: bool = True
 ) -> List[Tuple[str, float]]:
-    vertices = list(graph.word2idx.keys())
+    vertices = list(graph.label2idx.keys())
     graph = graph.adjacency_matrix
     ws = np.random.rand(len(vertices), 1)
     denorm = np.reshape(np.sum(graph, axis=1), (-1, 1))

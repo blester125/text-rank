@@ -1,8 +1,6 @@
-import re
-from math import log
 from itertools import combinations
-from collections import defaultdict
 import numpy as np
+from text_rank.utils import filter_pos, build_vocab, overlap
 
 
 class Vertex:
@@ -11,28 +9,34 @@ class Vertex:
         self.edges_out = {}
         self.edges_in = {}
 
+    @property
+    def degree_in(self):
+        return len(self.edges_in)
+
+    @property
+    def degree_out(self):
+        return len(self.edges_out)
+
     def __str__(self):
-        return "V(term={}, degree_in={}, degree_out={})".format(
-            self.value, self.index, len(self.edges_in), len(self.edges_out)
-        )
+        return f"V(term={self.value}, in={self.degree_in}, out={self.degree_out})"
 
 
 class Graph:
     def __init__(self, vocab):
-        self.word2idx = vocab
-        self.idx2word = {v: k for k, v in vocab.items()}
+        self.label2idx = vocab
+        self.idx2label = {v: k for k, v in vocab.items()}
 
     def __getitem__(self, token):
         if isinstance(token, int):
-            return self.idx2word[token]
-        return self.word2idx[token]
+            return self.idx2label[token]
+        return self.label2idx[token]
 
     def add_edge(source, target, weight):
         raise NotImplementedError
 
     @property
     def density(self):
-        raise NotImplementedError
+        return self.edge_count / (self.vertex_count * (self.vertex_count - 1))
 
     @property
     def edge_count(self):
@@ -42,11 +46,20 @@ class Graph:
     def vertex_count(self):
         raise NotImplementedError
 
+    def __str__(self):
+        return f"G(V={self.vertex_count}, E={self.edge_count}, D={self.density})"
+
+    def print_graph(self):
+        raise NotImplementedError
+
+    def to_dot(self):
+        raise NotImplementedError
+
 
 class AdjacencyList(Graph):
     def __init__(self, vocab):
         super().__init__(vocab)
-        self.vertices = [Vertex(k) for k in self.word2idx.keys()]
+        self.vertices = [Vertex(k) for k in self.label2idx.keys()]
 
     def add_edge(self, source, target, weight):
         source_idx = source if isinstance(source, int) else self[source]
@@ -55,6 +68,34 @@ class AdjacencyList(Graph):
         target_node = self.vertices[target_idx]
         source_node.edges_out[target_idx] = weight
         target_node.edges_in[source_idx] = weight
+
+    @property
+    def vertex_count(self):
+        return len(self.vertices)
+
+    @property
+    def edge_count(self):
+        return sum(v.degree_out for v in self.vertices)
+
+    def print_graph(self):
+        print(str(self))
+        for v in self.vertices:
+            print(f"\tVertex {self[v.value]}: {v}")
+            print(f"\t\tOutbound:")
+            for idx, weight in v.edges_out.items():
+                print(f"\t\t\t{self[v.value]} -> {idx}: {weight}")
+            print(f"\t\tInbound:")
+            for idx, weight in v.edges_in.items():
+                print(f"\t\t\t{self[v.value]} <- {idx}: {weight}")
+
+    def to_dot(self):
+        dot = ["digraph G {"]
+        for v in self.vertices:
+            dot.append(f'\t{self[v.value]} [label="{v.value}"]')
+            for idx, weight in v.edges_out.items():
+                dot.append(f'\t{self[v.value]} -> {idx} [label="{weight}"]')
+        dot.append("}")
+        return "\n".join(dot)
 
 
 class AdjacencyMatrix(Graph):
@@ -67,26 +108,39 @@ class AdjacencyMatrix(Graph):
         target = target if isinstance(target, int) else self[target]
         self.adjacency_matrix[source, target] = weight
 
+    @property
+    def vertex_count(self):
+        return self.adjacency_matrix.shape[0]
 
-def filter_pos(token):
-    if not re.match(r"^[NJ]", token["pos"]) and token["pos"] != "ADJ" and token["pos"] != "CD":
-        return False
-    return True
+    @property
+    def edge_count(self):
+        return np.sum(self.adjacency_matrix != 0)
 
+    def print_graph(self):
+        print(str(self))
+        for idx, label in self.idx2label.items():
+            print(f"\tVertex {idx}: {label}")
+            print(f"\t\tOutbound:")
+            for i, weight in enumerate(self.adjacency_matrix[idx, :]):
+                if weight == 0.0:
+                    continue
+                print(f"\t\t\t{idx} -> {i}: {weight}")
+            print(f"\t\tInbound:")
+            for i, weight in enumerate(self.adjacency_matrix[:, idx]):
+                if weight == 0.0:
+                    continue
+                print(f"\t\t\t{idx} <- {i}: {weight}")
 
-def overlap(s1, s2):
-    s1 = s1.split()
-    s2 = s2.split()
-    intersection = len(set(s1) & set(s2))
-    norm = log(len(s1)) + log(len(s2))
-    return intersection / norm
-
-
-def build_vocab(tokens):
-    vocab = defaultdict(lambda: len(vocab))
-    for token in tokens:
-        vocab[token]
-    return {k: i for k, i in vocab.items()}
+    def to_dot(self):
+        dot = ["digraph G {"]
+        for idx, label in self.idx2label.items():
+            dot.append(f'\t{idx} [label="{label}"]')
+            for i, weight in enumerate(self.adjacency_matrix[idx, :]):
+                if weight == 0.0:
+                    continue
+                dot.append(f'\t{idx} -> {i} [label="{weight}"]')
+        dot.append("}")
+        return "\n".join(dot)
 
 
 def keyword_graph(tokens, winsz=2, sim=lambda x, y: 1, GraphType=AdjacencyMatrix):
@@ -116,33 +170,3 @@ def sentence_graph(sentences, sim=overlap, GraphType=AdjacencyMatrix):
         graph.add_edge(src, tgt, sim(src, tgt))
         graph.add_edge(tgt, src, sim(tgt, src))
     return graph
-
-
-def show(vertices):
-    import networkx as nx
-    import matplotlib.pyplot as plt
-    from networkx.drawing.nx_agraph import graphviz_layout, to_agraph
-    import pygraphviz as pgv
-
-    G = nx.MultiDiGraph()
-    for vertex in vertices.values():
-        G.add_node(vertex.index)
-        for edge, weight in vertex.edges_out.items():
-            G.add_edge(vertex.index, edge, weight)
-        for edge, weight in vertex.edges_in.items():
-            G.add_edge(edge, vertex.index, weight)
-    A = to_agraph(G)
-    print(A)
-    A.layout("dot")
-    A.draw("test.png")
-
-
-def print_graph(g):
-    for v in g.values():
-        print(f"Vertex: {v.index}")
-        print("\tOutbound Edges:")
-        for idx, weight in v.edges_out.items():
-            print(f"\t\t{v.index}->{idx}: {weight}")
-        print("\tInbound Edges:")
-        for idx, weight in v.edges_in.items():
-            print(f"\t\t{idx}->{v.index}: {weight}")
