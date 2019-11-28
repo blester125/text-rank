@@ -48,7 +48,7 @@ setup(
     ],
     setup_requires=[
     ],
-    extra_require={
+    extras_require={
         'viz': ['networkx', 'matplotlib', 'pygraphviz'],
         'test': ['pytest'],
     },
