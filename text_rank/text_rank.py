@@ -1,6 +1,6 @@
 import random
 from operator import itemgetter
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Optional
 import numpy as np
 from tqdm import tqdm
 from text_rank.graph import Graph, AdjacencyList, AdjacencyMatrix, Vertex
@@ -21,12 +21,13 @@ def accum(vertices: List[Vertex], i: int, denom: List[float], ws: List[float]):
 
 
 def text_rank_list(
-    graph: AdjacencyList, niter: int = 200, dampening: float = 0.85, quiet: bool = True
+    graph: AdjacencyList, niter: int = 200, dampening: float = 0.85, quiet: bool = True, seed: Optional[int] = None
 ) -> List[Tuple[str, float]]:
     vertices = graph.vertices
     denom: List[float] = []
     ws: List[float] = []
 
+    random.seed(seed)
     for vertex in vertices:
         denom.append(sum_edges(vertex.edges_out))
         ws.append(random.random())
@@ -42,10 +43,11 @@ def text_rank_list(
 
 
 def text_rank_matrix(
-    graph: AdjacencyMatrix, niter: int = 200, dampening: float = 0.85, quiet: bool = True
+    graph: AdjacencyMatrix, niter: int = 200, dampening: float = 0.85, quiet: bool = True, seed: Optional[int] = None
 ) -> List[Tuple[str, float]]:
     vertices = list(graph.label2idx.keys())
     graph = graph.adjacency_matrix
+    np.random.seed(seed)
 
     ws = np.random.rand(len(vertices), 1)
     denom = np.reshape(np.sum(graph, axis=1), (-1, 1))
@@ -58,6 +60,8 @@ def text_rank_matrix(
     return sorted(zip(vertices, ws), key=itemgetter(1), reverse=True)
 
 
-def text_rank(graph: Graph, niter: int = 200, dampening: float = 0.85, quiet: bool = True) -> List[Tuple[str, float]]:
+def text_rank(
+    graph: Graph, niter: int = 200, dampening: float = 0.85, quiet: bool = True, seed: Optional[int] = None
+) -> List[Tuple[str, float]]:
     tr = text_rank_list if isinstance(graph, AdjacencyList) else text_rank_matrix
-    return tr(graph, niter=niter, dampening=dampening, quiet=quiet)
+    return tr(graph, niter=niter, dampening=dampening, quiet=quiet, seed=seed)
