@@ -1,0 +1,366 @@
+[
+  {
+    "surface": "Compatibility",
+    "pos": "NNP"
+  },
+  {
+    "surface": "of",
+    "pos": ""
+  },
+  {
+    "surface": "systems",
+    "pos": "NNP"
+  },
+  {
+    "surface": "of",
+    "pos": ""
+  },
+  {
+    "surface": "linear",
+    "pos": "NNP"
+  },
+  {
+    "surface": "constraints",
+    "pos": "NNP"
+  },
+  {
+    "surface": "over",
+    "pos": ""
+  },
+  {
+    "surface": "the",
+    "pos": ""
+  },
+  {
+    "surface": "set",
+    "pos": ""
+  },
+  {
+    "surface": "of",
+    "pos": ""
+  },
+  {
+    "surface": "natural",
+    "pos": "NNP"
+  },
+  {
+    "surface": "numbers",
+    "pos": "NNP"
+  },
+  {
+    "surface": ".",
+    "pos": ""
+  },
+  {
+    "surface": "Criteria",
+    "pos": "NNP"
+  },
+  {
+    "surface": "of",
+    "pos": ""
+  },
+  {
+    "surface": "compatibility",
+    "pos": "NNP"
+  },
+  {
+    "surface": "of",
+    "pos": ""
+  },
+  {
+    "surface": "a",
+    "pos": ""
+  },
+  {
+    "surface": "system",
+    "pos": "NNP"
+  },
+  {
+    "surface": "of",
+    "pos": ""
+  },
+  {
+    "surface": "linear",
+    "pos": "NNP"
+  },
+  {
+    "surface": "Diophantine",
+    "pos": "NNP"
+  },
+  {
+    "surface": "equations",
+    "pos": "NNP"
+  },
+  {
+    "surface": ",",
+    "pos": ""
+  },
+  {
+    "surface": "strict",
+    "pos": "NNP"
+  },
+  {
+    "surface": "inequations",
+    "pos": "NNP"
+  },
+  {
+    "surface": ",",
+    "pos": ""
+  },
+  {
+    "surface": "and",
+    "pos": ""
+  },
+  {
+    "surface": "nonstrict",
+    "pos": "NNP"
+  },
+  {
+    "surface": "inequations",
+    "pos": "NNP"
+  },
+  {
+    "surface": "are",
+    "pos": ""
+  },
+  {
+    "surface": "considered",
+    "pos": ""
+  },
+  {
+    "surface": ".",
+    "pos": ""
+  },
+  {
+    "surface": "Upper",
+    "pos": "NNP"
+  },
+  {
+    "surface": "bounds",
+    "pos": "NNP"
+  },
+  {
+    "surface": "for",
+    "pos": ""
+  },
+  {
+    "surface": "components",
+    "pos": "NNP"
+  },
+  {
+    "surface": "of",
+    "pos": ""
+  },
+  {
+    "surface": "a",
+    "pos": ""
+  },
+  {
+    "surface": "minimal",
+    "pos": "NNP"
+  },
+  {
+    "surface": "set",
+    "pos": ""
+  },
+  {
+    "surface": "of",
+    "pos": ""
+  },
+  {
+    "surface": "solutions",
+    "pos": "NNP"
+  },
+  {
+    "surface": "and",
+    "pos": ""
+  },
+  {
+    "surface": "algorithms",
+    "pos": "NNP"
+  },
+  {
+    "surface": "of",
+    "pos": ""
+  },
+  {
+    "surface": "construction",
+    "pos": "NNP"
+  },
+  {
+    "surface": "of",
+    "pos": ""
+  },
+  {
+    "surface": "minimal",
+    "pos": "NNP"
+  },
+  {
+    "surface": "generating",
+    "pos": ""
+  },
+  {
+    "surface": "sets",
+    "pos": "NNP"
+  },
+  {
+    "surface": "of",
+    "pos": ""
+  },
+  {
+    "surface": "solutions",
+    "pos": "NNP"
+  },
+  {
+    "surface": "for",
+    "pos": ""
+  },
+  {
+    "surface": "all",
+    "pos": ""
+  },
+  {
+    "surface": "types",
+    "pos": "NNP"
+  },
+  {
+    "surface": "of",
+    "pos": ""
+  },
+  {
+    "surface": "systems",
+    "pos": "NNP"
+  },
+  {
+    "surface": "are",
+    "pos": ""
+  },
+  {
+    "surface": "given",
+    "pos": ""
+  },
+  {
+    "surface": ".",
+    "pos": ""
+  },
+  {
+    "surface": "These",
+    "pos": ""
+  },
+  {
+    "surface": "criteria",
+    "pos": "NNP"
+  },
+  {
+    "surface": "and",
+    "pos": ""
+  },
+  {
+    "surface": "the",
+    "pos": ""
+  },
+  {
+    "surface": "corresponding",
+    "pos": ""
+  },
+  {
+    "surface": "algorithms",
+    "pos": "NNP"
+  },
+  {
+    "surface": "for",
+    "pos": ""
+  },
+  {
+    "surface": "constructing",
+    "pos": ""
+  },
+  {
+    "surface": "a",
+    "pos": ""
+  },
+  {
+    "surface": "minimal",
+    "pos": "NNP"
+  },
+  {
+    "surface": "supporting",
+    "pos": ""
+  },
+  {
+    "surface": "set",
+    "pos": ""
+  },
+  {
+    "surface": "of",
+    "pos": ""
+  },
+  {
+    "surface": "solutions",
+    "pos": "NNP"
+  },
+  {
+    "surface": "can",
+    "pos": ""
+  },
+  {
+    "surface": "be",
+    "pos": ""
+  },
+  {
+    "surface": "used",
+    "pos": ""
+  },
+  {
+    "surface": "in",
+    "pos": ""
+  },
+  {
+    "surface": "solving",
+    "pos": ""
+  },
+  {
+    "surface": "all",
+    "pos": ""
+  },
+  {
+    "surface": "the",
+    "pos": ""
+  },
+  {
+    "surface": "considered",
+    "pos": ""
+  },
+  {
+    "surface": "types",
+    "pos": "NNP"
+  },
+  {
+    "surface": "systems",
+    "pos": "NNP"
+  },
+  {
+    "surface": "and",
+    "pos": ""
+  },
+  {
+    "surface": "systems",
+    "pos": "NNP"
+  },
+  {
+    "surface": "of",
+    "pos": ""
+  },
+  {
+    "surface": "mixed",
+    "pos": ""
+  },
+  {
+    "surface": "types",
+    "pos": "NNP"
+  },
+  {
+    "surface": ".",
+    "pos": ""
+  }
+]
