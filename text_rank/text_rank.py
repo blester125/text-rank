@@ -1,3 +1,4 @@
+import math
 import random
 from operator import itemgetter
 from typing import List, Tuple, Dict, Optional
@@ -9,15 +10,11 @@ from text_rank.graph import Graph, AdjacencyList, AdjacencyMatrix, Vertex
 def sum_edges(edges: Dict[str, float]) -> float:
     return sum(edges.values())
 
-
-def accum(vertices: List[Vertex], i: int, denom: List[float], ws: List[float]):
-    acc = 0
-    for edge in vertices[i].edges_in:
-        j = vertices[edge]
-        edge_ji = j.edges_out.get(i)
-        if edge_ji is not None:
-            acc += edge_ji / denom[edge] * ws[edge]
-    return acc
+def accum(vertex: Vertex, denom: List[float], ws: List[float]):
+    acc = []
+    for edge, weight in vertex.edges_in.items():
+        acc.append(weight / denom[edge] * ws[edge])
+    return math.fsum(acc)
 
 
 def text_rank_list(
@@ -34,8 +31,8 @@ def text_rank_list(
 
     for _ in tqdm(range(niter), disable=quiet):
         updates: List[float] = []
-        for i in range(len(vertices)):
-            acc = accum(vertices, i, denom, ws)
+        for vertex in vertices:
+            acc = accum(vertex, denom, ws)
             updates.append(acc)
         for i, update in enumerate(updates):
             ws[i] = (1 - dampening) + dampening * update
