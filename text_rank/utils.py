@@ -12,8 +12,9 @@ def filter_pos(token):
 def overlap(s1, s2):
     s1 = set(s1.split())
     s2 = set(s2.split())
-    intersection = len(s1) & len(s2)
+    intersection = len(s1 & s2)
     norm = log(len(s1)) + log(len(s2))
+    norm = 1 if norm == 0.0 else norm
     return intersection / norm
 
 
