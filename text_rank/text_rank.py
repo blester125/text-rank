@@ -38,7 +38,7 @@ def _(graph: AdjacencyList, seed: Optional[int] = None) -> Tuple[List[float], Li
 @text_rank_init.register(AdjacencyMatrix)
 def _(graph: AdjacencyMatrix, seed: Optional[int] = None) -> Tuple[np.ndarray, np.ndarray]:
     np.random.seed(seed)
-    ws = np.random.rand(len(graph.label2idx), 1)
+    ws = np.random.rand(graph.vertex_count, 1)
     denom = np.reshape(np.sum(graph.adjacency_matrix, axis=1), (-1, 1))
     return ws, denom
 
@@ -90,6 +90,10 @@ def text_rank(
     quiet: bool = True,
     seed: Optional[int] = None,
 ) -> List[Tuple[str, float]]:
+    """Implementation of text rank from here https://www.aclweb.org/anthology/W04-3252.pdf
+
+    
+    """
 
     ws_prev, denom = text_rank_init(graph, seed)
 

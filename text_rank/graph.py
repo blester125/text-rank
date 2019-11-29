@@ -1,6 +1,6 @@
 from itertools import combinations
 import numpy as np
-from text_rank.utils import filter_pos, build_vocab, overlap
+from text_rank.utils import filter_pos, overlap, build_vocab
 
 
 class Vertex:
@@ -24,7 +24,7 @@ class Vertex:
 class Graph:
     def __init__(self, vocab):
         self.label2idx = vocab
-        self.idx2label = {v: k for k, v in vocab.items()}
+        self.idx2label = {i: k for k, i in self.label2idx.items()}
 
     def __getitem__(self, token):
         if isinstance(token, int):
@@ -57,9 +57,10 @@ class Graph:
 
 
 class AdjacencyList(Graph):
+
     def __init__(self, vocab):
         super().__init__(vocab)
-        self.vertices = [Vertex(k) for k in self.label2idx.keys()]
+        self.vertices = [Vertex(k) for k in self.label2idx]
 
     def add_edge(self, source, target, weight):
         source_idx = source if isinstance(source, int) else self[source]
@@ -91,9 +92,9 @@ class AdjacencyList(Graph):
     def to_dot(self):
         dot = ["digraph G {"]
         for v in self.vertices:
-            dot.append(f'\t{self[v.value]} [label="{v.value}"]')
+            dot.append(f'\t{self[v.value]} [label="{v.value}"];')
             for idx, weight in v.edges_out.items():
-                dot.append(f'\t{self[v.value]} -> {idx} [label="{weight}"]')
+                dot.append(f'\t{self[v.value]} -> {idx} [label="{weight}"];')
         dot.append("}")
         return "\n".join(dot)
 
@@ -104,9 +105,9 @@ class AdjacencyMatrix(Graph):
         self.adjacency_matrix = np.zeros((len(vocab), len(vocab)))
 
     def add_edge(self, source, target, weight):
-        source = source if isinstance(source, int) else self[source]
-        target = target if isinstance(target, int) else self[target]
-        self.adjacency_matrix[source, target] = weight
+        source_idx = source if isinstance(source, int) else self[source]
+        target_idx = target if isinstance(target, int) else self[target]
+        self.adjacency_matrix[source_idx, target_idx] = weight
 
     @property
     def vertex_count(self):
@@ -134,27 +135,45 @@ class AdjacencyMatrix(Graph):
     def to_dot(self):
         dot = ["digraph G {"]
         for idx, label in self.idx2label.items():
-            dot.append(f'\t{idx} [label="{label}"]')
+            dot.append(f'\t{idx} [label="{label}"];')
             for i, weight in enumerate(self.adjacency_matrix[idx, :]):
                 if weight == 0.0:
                     continue
-                dot.append(f'\t{idx} -> {i} [label="{weight}"]')
+                dot.append(f'\t{idx} -> {i} [label="{weight}"];')
+        dot.append("}")
+        return "\n".join(dot)
+
+    def to_undirected(self):
+        dot = ["graph G {"]
+        for idx, label in self.idx2label.items():
+            dot.append(f'\t{idx} [label="{label}"];')
+            for i, weight in enumerate(self.adjacency_matrix[idx, :]):
+                if weight == 0:
+                    continue
+                if i >= idx:
+                    continue
+                dot.append(f'\t{idx} -- {i};')
         dot.append("}")
         return "\n".join(dot)
 
 
-def keyword_graph(tokens, winsz=2, sim=lambda x, y: 1, GraphType=AdjacencyMatrix):
-    tokens = list(map(lambda x: x["term"], filter(filter_pos, tokens)))
-    vocab = build_vocab(tokens)
+def keyword_graph(tokens, winsz=2, sim=lambda x, y: 1, filt=filter_pos, GraphType=AdjacencyMatrix):
+    valid_tokens = list(map(lambda x: x['term'], filter(filt, tokens)))
+    vocab = build_vocab(valid_tokens)
     graph = GraphType(vocab)
 
+    tokens = list(map(lambda x: x['term'], tokens))
     for i, token in enumerate(tokens):
+        if token not in graph.label2idx:
+            continue
         source_idx = graph[token]
         min_ = max(0, i - winsz)
         max_ = min(len(tokens) - 1, i + winsz)
         for j in range(min_, max_):
-            other = tokens[j]
             if i == j:
+                continue
+            other = tokens[j]
+            if other not in graph.label2idx:
                 continue
             target_idx = graph[other]
             graph.add_edge(source_idx, target_idx, sim(token, other))
@@ -162,11 +181,11 @@ def keyword_graph(tokens, winsz=2, sim=lambda x, y: 1, GraphType=AdjacencyMatrix
     return graph
 
 
-def sentence_graph(sentences, sim=overlap, GraphType=AdjacencyMatrix):
-    vocab = build_vocab(sentences)
+def sentence_graph(tokens, sim=overlap, GraphType=AdjacencyMatrix):
+    vocab = build_vocab(tokens)
     graph = GraphType(vocab)
 
-    for src, tgt in combinations(sentences, 2):
+    for src, tgt in combinations(tokens, 2):
         graph.add_edge(src, tgt, sim(src, tgt))
         graph.add_edge(tgt, src, sim(tgt, src))
     return graph

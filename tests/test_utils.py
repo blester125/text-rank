@@ -43,27 +43,6 @@ def test_filter_pos_other():
         test()
 
 
-def test_build_vocab():
-    def test():
-        gold_vocab = {}
-        i = 0
-        tokens = []
-        for _ in range(random.randint(10, 20)):
-            text = rand_str()
-            if text in gold_vocab:
-                continue
-            gold_vocab[text] = i
-            i += 1
-            tokens.append(text)
-            if random.choice([True, False]):
-                tokens.append(random.choice(tokens))
-        vocab = build_vocab(tokens)
-        assert vocab == gold_vocab
-
-    for _ in range(TRIALS):
-        test()
-
-
 def test_overlap():
     def test():
         intersection = random.randint(0, 10)
@@ -105,6 +84,27 @@ def test_overlap():
 
         score = overlap(ex1, ex2)
         assert math.isclose(score, gold_score)
+
+    for _ in range(TRIALS):
+        test()
+
+
+def test_build_vocab():
+    def test():
+        gold_vocab = {}
+        i = 0
+        tokens = []
+        for _ in range(random.randint(10, 20)):
+            text = rand_str()
+            if text in gold_vocab:
+                continue
+            gold_vocab[text] = i
+            i += 1
+            tokens.append(text)
+            if random.choice([True, False]):
+                tokens.append(random.choice(tokens))
+        vocab = build_vocab(tokens)
+        assert vocab == gold_vocab
 
     for _ in range(TRIALS):
         test()

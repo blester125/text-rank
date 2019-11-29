@@ -10,7 +10,7 @@ def main():
     parser.add_argument("--sents", "-s", type=int, default=3)
     parser.add_argument("--words", "-w", type=int, default=5)
     parser.add_argument("--iters", "-i", type=int, default=40)
-    parser.add_argument("--convergence", "-c", type=float, default=0.0001)
+    parser.add_argument("--convergence", "-c", type=float, default=0.0)
     parser.add_argument("--verbose", "-v", action="store_true")
     args = parser.parse_args()
 

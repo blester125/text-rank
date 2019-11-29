@@ -29,6 +29,3 @@ def test_sum_edges():
 
 def test_accum():
     gold = random.randint(0, 1)
-
-
-
