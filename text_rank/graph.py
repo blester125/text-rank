@@ -78,10 +78,10 @@ class AdjacencyList(Graph):
     def edge_count(self):
         return sum(v.degree_out for v in self.vertices)
 
-    def print_graph(self):
+    def print_graph(self, label_length=None):
         print(str(self))
         for v in self.vertices:
-            print(f"\tVertex {self[v.value]}: {v}")
+            print(f"\tVertex {self[v.value]}: {v.value[:label_length]}")
             print(f"\t\tOutbound:")
             for idx, weight in v.edges_out.items():
                 print(f"\t\t\t{self[v.value]} -> {idx}: {weight}")
@@ -89,12 +89,25 @@ class AdjacencyList(Graph):
             for idx, weight in v.edges_in.items():
                 print(f"\t\t\t{self[v.value]} <- {idx}: {weight}")
 
-    def to_dot(self):
+    def to_dot(self, label_length=None):
         dot = ["digraph G {"]
         for v in self.vertices:
-            dot.append(f'\t{self[v.value]} [label="{v.value}"];')
+            dot.append(f'\t{self[v.value]} [label="{v.value[:label_length]}"];')
             for idx, weight in v.edges_out.items():
                 dot.append(f'\t{self[v.value]} -> {idx} [label="{weight}"];')
+        dot.append("}")
+        return "\n".join(dot)
+
+    def to_undirected_dot(self, label_length=None):
+        dot = ["graph G {"]
+        edges = set()
+        for v in self.vertices:
+            dot.append(f'\t{self[v.value]} [label="{v.value[:label_length]}"];')
+            for idx, weight in v.edges_out.items():
+                if (self[v.value], idx) in edges or (idx, self[v.value]) in edges:
+                    continue
+                dot.append(f'\t{self[v.value]} -- {idx} [label="{weight}"];')
+                edges.add((self[v.value], idx))
         dot.append("}")
         return "\n".join(dot)
 
@@ -117,10 +130,10 @@ class AdjacencyMatrix(Graph):
     def edge_count(self):
         return np.sum(self.adjacency_matrix != 0)
 
-    def print_graph(self):
+    def print_graph(self, label_length=None):
         print(str(self))
         for idx, label in self.idx2label.items():
-            print(f"\tVertex {idx}: {label}")
+            print(f"\tVertex {idx}: {label[:label_length]}")
             print(f"\t\tOutbound:")
             for i, weight in enumerate(self.adjacency_matrix[idx, :]):
                 if weight == 0.0:
@@ -132,10 +145,10 @@ class AdjacencyMatrix(Graph):
                     continue
                 print(f"\t\t\t{idx} <- {i}: {weight}")
 
-    def to_dot(self):
+    def to_dot(self, label_length=None):
         dot = ["digraph G {"]
         for idx, label in self.idx2label.items():
-            dot.append(f'\t{idx} [label="{label}"];')
+            dot.append(f'\t{idx} [label="{label[:label_length]}"];')
             for i, weight in enumerate(self.adjacency_matrix[idx, :]):
                 if weight == 0.0:
                     continue
@@ -143,16 +156,16 @@ class AdjacencyMatrix(Graph):
         dot.append("}")
         return "\n".join(dot)
 
-    def to_undirected(self):
+    def to_undirected_dot(self, label_length=None):
         dot = ["graph G {"]
         for idx, label in self.idx2label.items():
-            dot.append(f'\t{idx} [label="{label}"];')
+            dot.append(f'\t{idx} [label="{label[:label_length]}"];')
             for i, weight in enumerate(self.adjacency_matrix[idx, :]):
                 if weight == 0:
                     continue
                 if i >= idx:
                     continue
-                dot.append(f'\t{idx} -- {i};')
+                dot.append(f'\t{idx} -- {i} [label="{weight}"];')
         dot.append("}")
         return "\n".join(dot)
 

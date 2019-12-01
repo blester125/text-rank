@@ -37,8 +37,10 @@ setup(
     packages=find_packages(),
     package_data={
         'text_rank': [
-            'text_rank/data/Automatic_Summarization-sents.json',
-            'text_rank/data/Automatic_Summarization-tokens.json',
+            'text_rank/data/automatic-summarization-sents.json',
+            'text_rank/data/automatic-summarization-tokens.json',
+            'text_rank/data/paper-example-keywords.json',
+            'text_rank/data/paper-example-summarize.json',
         ],
     },
     include_package_data=True,

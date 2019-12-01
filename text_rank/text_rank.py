@@ -30,7 +30,10 @@ def _(graph: AdjacencyList, seed: Optional[int] = None) -> Tuple[List[float], Li
     ws: List[float] = []
     random.seed(seed)
     for v in graph.vertices:
-        denom.append(sum_edges(v.edges_out))
+        total = sum_edges(v.edges_out)
+        # If the sum off all outgoing edges of V_j is 0.0 then the incoming edge from V_j to V_i will be 0.0
+        # We can use anything as the denominator and the value will still be zero
+        denom.append(total if total != 0.0 else 1.0)
         ws.append(random.random())
     return ws, denom
 
@@ -40,6 +43,9 @@ def _(graph: AdjacencyMatrix, seed: Optional[int] = None) -> Tuple[np.ndarray, n
     np.random.seed(seed)
     ws = np.random.rand(graph.vertex_count, 1)
     denom = np.reshape(np.sum(graph.adjacency_matrix, axis=1), (-1, 1))
+    # If the sum off all outgoing edges of V_j is 0.0 then the incoming edge from V_j to V_i will be 0.0
+    # We can use anything as the denominator and the value will still be zero
+    denom[denom == 0.0] = 1.0
     return ws, denom
 
 

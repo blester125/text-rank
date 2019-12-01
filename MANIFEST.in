@@ -1,2 +1,4 @@
-include text_rank/data/Automatic_Summarization-tokens.json
-include text_rank/data/Automatic_Summarization-sents.json
+include text_rank/data/automatic-summarization-tokens.json
+include text_rank/data/automatic-summarization-sents.json
+include text_rank/data/paper-example-keywords.json
+include text_rank/data/paper-example-summarize.json

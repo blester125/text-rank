@@ -26,13 +26,7 @@ def join_keywords(candidates, tokens):
 def keywords(tokens, n_words=None, winsz=2, dampening=0.85, convergence=0.0001, niter=200, quiet=True, seed=None, sim=lambda x, y: 1, filt=filter_pos, GraphType=AdjacencyMatrix):
     graph = keyword_graph(tokens, winsz, sim, filt, GraphType)
     if n_words is None:
-        n_words = graph.vertex_count // 3
+        n_words = len(tokens) // 3
     keywords = text_rank(graph, convergence, niter, quiet)[:n_words]
     keywords = join_keywords([kw[0] for kw in keywords], map(lambda x: x['term'], tokens))
     return keywords
-
-
-import json
-from text_rank import DEMO_LOC
-tokens = json.load(open(DEMO_LOC / "paper-example.json"))
-print(keywords(tokens, 20))
