@@ -1,0 +1,342 @@
+[
+  {
+    "term": "compatibility",
+    "pos": "NNP"
+  },
+  {
+    "term": "of",
+    "pos": "G"
+  },
+  {
+    "term": "systems",
+    "pos": "NNP"
+  },
+  {
+    "term": "of",
+    "pos": "G"
+  },
+  {
+    "term": "linear",
+    "pos": "NNP"
+  },
+  {
+    "term": "constraints",
+    "pos": "NNP"
+  },
+  {
+    "term": "over",
+    "pos": "G"
+  },
+  {
+    "term": "the",
+    "pos": "GP"
+  },
+  {
+    "term": "set",
+    "pos": "G"
+  },
+  {
+    "term": "of",
+    "pos": "G"
+  },
+  {
+    "term": "natural",
+    "pos": "NNP"
+  },
+  {
+    "term": "numbers",
+    "pos": "NNP"
+  },
+  {
+    "term": "criteria",
+    "pos": "NNP"
+  },
+  {
+    "term": "of",
+    "pos": "G"
+  },
+  {
+    "term": "compatibility",
+    "pos": "NNP"
+  },
+  {
+    "term": "of",
+    "pos": "G"
+  },
+  {
+    "term": "a",
+    "pos": "G"
+  },
+  {
+    "term": "system",
+    "pos": "NNP"
+  },
+  {
+    "term": "of",
+    "pos": "G"
+  },
+  {
+    "term": "linear",
+    "pos": "NNP"
+  },
+  {
+    "term": "diophantine",
+    "pos": "NNP"
+  },
+  {
+    "term": "equations",
+    "pos": "NNP"
+  },
+  {
+    "term": "strict",
+    "pos": "G"
+  },
+  {
+    "term": "inequations",
+    "pos": "NNP"
+  },
+  {
+    "term": "and",
+    "pos": "G"
+  },
+  {
+    "term": "nonstrict",
+    "pos": "NNP"
+  },
+  {
+    "term": "inequations",
+    "pos": "NNP"
+  },
+  {
+    "term": "are",
+    "pos": "G"
+  },
+  {
+    "term": "considered",
+    "pos": "G"
+  },
+  {
+    "term": "upper",
+    "pos": "NNP"
+  },
+  {
+    "term": "bounds",
+    "pos": "NNP"
+  },
+  {
+    "term": "for",
+    "pos": "G"
+  },
+  {
+    "term": "components",
+    "pos": "NNP"
+  },
+  {
+    "term": "of",
+    "pos": "G"
+  },
+  {
+    "term": "a",
+    "pos": "G"
+  },
+  {
+    "term": "minimal",
+    "pos": "NNP"
+  },
+  {
+    "term": "set",
+    "pos": "G"
+  },
+  {
+    "term": "of",
+    "pos": "G"
+  },
+  {
+    "term": "solutions",
+    "pos": "NNP"
+  },
+  {
+    "term": "and",
+    "pos": "G"
+  },
+  {
+    "term": "algorithms",
+    "pos": "NNP"
+  },
+  {
+    "term": "of",
+    "pos": "G"
+  },
+  {
+    "term": "construction",
+    "pos": "NNP"
+  },
+  {
+    "term": "of",
+    "pos": "G"
+  },
+  {
+    "term": "minimal",
+    "pos": "NNP"
+  },
+  {
+    "term": "generating",
+    "pos": "G"
+  },
+  {
+    "term": "sets",
+    "pos": "NNP"
+  },
+  {
+    "term": "of",
+    "pos": "G"
+  },
+  {
+    "term": "solutions",
+    "pos": "NNP"
+  },
+  {
+    "term": "for",
+    "pos": "G"
+  },
+  {
+    "term": "all",
+    "pos": "G"
+  },
+  {
+    "term": "types",
+    "pos": "NNP"
+  },
+  {
+    "term": "of",
+    "pos": "G"
+  },
+  {
+    "term": "systems",
+    "pos": "NNP"
+  },
+  {
+    "term": "are",
+    "pos": "G"
+  },
+  {
+    "term": "given",
+    "pos": "G"
+  },
+  {
+    "term": "these",
+    "pos": "G"
+  },
+  {
+    "term": "criteria",
+    "pos": "NNP"
+  },
+  {
+    "term": "and",
+    "pos": "G"
+  },
+  {
+    "term": "the",
+    "pos": "G"
+  },
+  {
+    "term": "corresponding",
+    "pos": "G"
+  },
+  {
+    "term": "algorithms",
+    "pos": "G"
+  },
+  {
+    "term": "for",
+    "pos": "G"
+  },
+  {
+    "term": "constructing",
+    "pos": "G"
+  },
+  {
+    "term": "a",
+    "pos": "G"
+  },
+  {
+    "term": "minimal",
+    "pos": "NNP"
+  },
+  {
+    "term": "supporting",
+    "pos": "G"
+  },
+  {
+    "term": "set",
+    "pos": "G"
+  },
+  {
+    "term": "of",
+    "pos": "G"
+  },
+  {
+    "term": "solutions",
+    "pos": "G"
+  },
+  {
+    "term": "can",
+    "pos": "G"
+  },
+  {
+    "term": "be",
+    "pos": "G"
+  },
+  {
+    "term": "used",
+    "pos": "G"
+  },
+  {
+    "term": "in",
+    "pos": "G"
+  },
+  {
+    "term": "solving",
+    "pos": "G"
+  },
+  {
+    "term": "all",
+    "pos": "G"
+  },
+  {
+    "term": "the",
+    "pos": "G"
+  },
+  {
+    "term": "considered",
+    "pos": "G"
+  },
+  {
+    "term": "types",
+    "pos": "NNP"
+  },
+  {
+    "term": "systems",
+    "pos": "NNP"
+  },
+  {
+    "term": "and",
+    "pos": "G"
+  },
+  {
+    "term": "systems",
+    "pos": "NNP"
+  },
+  {
+    "term": "of",
+    "pos": "G"
+  },
+  {
+    "term": "mixed",
+    "pos": "G"
+  },
+  {
+    "term": "types",
+    "pos": "NNP"
+  }
+]
