@@ -45,12 +45,12 @@ def overlap(s1: str, s2: str, **kwargs) -> float:
 
     Note:
         There is a weird edge case in this function when both sets have a single word. This results
-        in a denominator of 0.0 which causes an error. I am currently forcing the denominator to 1.0
-        in this cause. This makes since because then both of them are a single word, there are two
-        cases, one where the overlap is `0`, this results in a weight of `0` which makes sense. The
-        other case is when they match. This results in a `1` which somewhat makes sense give that is
-        less when there is a perfect match for 2 and approximately follows the trend as the size of
-        the perfect match decreases.
+        in a denominator of 0.0 which causes an error. I am currently forcing the denominator to
+        `0.9256056207721526` in this case. This makes since because then both of them are a single
+        word, there are two cases, one where the overlap is `0`, this results in a weight of `0` which
+        makes sense. The other case is when they match. This results in a `1.0803737332167307` which
+        was calculated by fitting this function and finding the value it predicts for `1`. See
+        scripts/find-sim-of-one.py for this fitting.
 
     :param s1: The first item
     :param s2: The second item
@@ -60,7 +60,7 @@ def overlap(s1: str, s2: str, **kwargs) -> float:
     s2 = set(s2.split())
     intersection = len(s1 & s2)
     norm = log(len(s1)) + log(len(s2))
-    norm = 1 if norm == 0.0 else norm
+    norm = 0.9256056207721526 if norm == 0.0 else norm
     return intersection / norm
 
 
