@@ -4,7 +4,7 @@ from unittest.mock import patch
 import pytest
 from text_rank.text_rank import (
     sum_edges,
-    accumulate_scores,
+    accumulate_score,
     text_rank_init_list,
     text_rank_init_matrix,
     text_rank_update_list,
