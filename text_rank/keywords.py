@@ -23,10 +23,22 @@ def join_keywords(candidates, tokens):
     return set(keywords)
 
 
-def keywords(tokens, n_words=None, winsz=2, dampening=0.85, convergence=0.0001, niter=200, quiet=True, seed=None, sim=lambda x, y: 1, filt=filter_pos, GraphType=AdjacencyMatrix):
+def keywords(
+    tokens,
+    n_words=None,
+    winsz=2,
+    dampening=0.85,
+    convergence=0.0001,
+    niter=200,
+    quiet=True,
+    seed=None,
+    sim=lambda x, y: 1,
+    filt=filter_pos,
+    GraphType=AdjacencyMatrix,
+):
     graph = keyword_graph(tokens, winsz, sim, filt, GraphType)
     if n_words is None:
         n_words = len(tokens) // 3
     keywords = text_rank(graph, convergence, niter, quiet)[:n_words]
-    keywords = join_keywords([kw[0] for kw in keywords], map(lambda x: x['surface'], tokens))
+    keywords = join_keywords([kw[0] for kw in keywords], map(lambda x: x["surface"], tokens))
     return keywords

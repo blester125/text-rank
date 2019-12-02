@@ -30,7 +30,7 @@ def norm_sentence(sent):
 
 def norm_token(token):
     token = token.lower()
-    return ASCII.sub('', token)
+    return ASCII.sub("", token)
 
 
 def build_vocab(tokens):

@@ -218,14 +218,12 @@ from collections import defaultdict
 #             valid_tokens.append(token)
 
 
-
-
 def keyword_graph(tokens, winsz=2, sim=lambda x, y: 1, filt=filter_pos, GraphType=AdjacencyMatrix):
-    valid_tokens = list(map(lambda x: x['surface'], filter(filt, tokens)))
+    valid_tokens = list(map(lambda x: x["surface"], filter(filt, tokens)))
     vocab = build_vocab(valid_tokens)
     graph = GraphType(vocab)
 
-    tokens = list(map(lambda x: x['surface'], tokens))
+    tokens = list(map(lambda x: x["surface"], tokens))
     for i, token in enumerate(tokens):
         if token not in graph.label2idx:
             continue
@@ -252,10 +250,7 @@ def keyword_graph(tokens, winsz=2, sim=lambda x, y: 1, filt=filter_pos, GraphTyp
 #     GraphType: Type[Graph] = AdjacencyMatrix
 # ) -> Tuple[Graph, Dict[str, List[int]]]:
 def sentence_graph(
-    tokens: List[str],
-    sim= overlap,
-    norm= norm_sentence,
-    GraphType= AdjacencyMatrix
+    tokens: List[str], sim=overlap, norm=norm_sentence, GraphType=AdjacencyMatrix
 ) -> Tuple[Graph, Dict[str, List[int]]]:
 
     offsets = defaultdict(list)

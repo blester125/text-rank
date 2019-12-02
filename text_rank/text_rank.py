@@ -92,7 +92,9 @@ def text_rank_update(graph: Graph, ws: List[float], denom: List[float], dampenin
 
 
 @text_rank_update.register(AdjacencyList)
-def text_rank_update_list(graph: AdjacencyList, ws: List[float], denom: List[float], dampening: float = 0.85) -> List[float]:
+def text_rank_update_list(
+    graph: AdjacencyList, ws: List[float], denom: List[float], dampening: float = 0.85
+) -> List[float]:
     updates: List[float] = []
     for v in graph.vertices:
         acc = accumulate_scores(v, ws, denom)
@@ -103,7 +105,9 @@ def text_rank_update_list(graph: AdjacencyList, ws: List[float], denom: List[flo
 
 
 @text_rank_update.register(AdjacencyMatrix)
-def text_rank_update_matrix(graph: AdjacencyMatrix, ws: np.ndarray, denom: np.ndarray, dampening: float = 0.85) -> np.ndarray:
+def text_rank_update_matrix(
+    graph: AdjacencyMatrix, ws: np.ndarray, denom: np.ndarray, dampening: float = 0.85
+) -> np.ndarray:
     update = np.sum(graph.adjacency_matrix / denom * ws, axis=0)
     ws = np.reshape((1 - dampening) + dampening * update, (-1, 1))
     return ws
