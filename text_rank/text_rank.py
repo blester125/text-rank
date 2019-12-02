@@ -99,6 +99,9 @@ def text_rank_update_list(
     for v in graph.vertices:
         acc = accumulate_scores(v, ws, denom)
         updates.append(acc)
+    # We collect the updated scores for each node and apply them after. If we were to apply these
+    # updates as they happen we would get different results than from the vectorized version used
+    # in the adjacency matrix version
     for i, update in enumerate(updates):
         ws[i] = (1 - dampening) + dampening * update
     return ws
