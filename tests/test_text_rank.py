@@ -2,7 +2,16 @@ import sys
 import random
 from unittest.mock import patch
 import pytest
-from text_rank.text_rank import sum_edges, accum, text_rank
+from text_rank.text_rank import (
+    sum_edges,
+    accumulate_scores,
+    text_rank_init_list,
+    text_rank_init_matrix,
+    text_rank_update_list,
+    text_rank_update_matrix,
+    text_rank_output_list,
+    text_rank_output_matrix,
+)
 
 
 TRIALS = 100

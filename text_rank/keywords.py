@@ -28,5 +28,5 @@ def keywords(tokens, n_words=None, winsz=2, dampening=0.85, convergence=0.0001, 
     if n_words is None:
         n_words = len(tokens) // 3
     keywords = text_rank(graph, convergence, niter, quiet)[:n_words]
-    keywords = join_keywords([kw[0] for kw in keywords], map(lambda x: x['term'], tokens))
+    keywords = join_keywords([kw[0] for kw in keywords], map(lambda x: x['surface'], tokens))
     return keywords

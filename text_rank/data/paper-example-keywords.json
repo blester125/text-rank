@@ -1,342 +1,342 @@
 [
   {
-    "term": "compatibility",
+    "surface": "compatibility",
     "pos": "NNP"
   },
   {
-    "term": "of",
+    "surface": "of",
     "pos": "G"
   },
   {
-    "term": "systems",
+    "surface": "systems",
     "pos": "NNP"
   },
   {
-    "term": "of",
+    "surface": "of",
     "pos": "G"
   },
   {
-    "term": "linear",
+    "surface": "linear",
     "pos": "NNP"
   },
   {
-    "term": "constraints",
+    "surface": "constraints",
     "pos": "NNP"
   },
   {
-    "term": "over",
+    "surface": "over",
     "pos": "G"
   },
   {
-    "term": "the",
+    "surface": "the",
     "pos": "GP"
   },
   {
-    "term": "set",
+    "surface": "set",
     "pos": "G"
   },
   {
-    "term": "of",
+    "surface": "of",
     "pos": "G"
   },
   {
-    "term": "natural",
+    "surface": "natural",
     "pos": "NNP"
   },
   {
-    "term": "numbers",
+    "surface": "numbers",
     "pos": "NNP"
   },
   {
-    "term": "criteria",
+    "surface": "criteria",
     "pos": "NNP"
   },
   {
-    "term": "of",
+    "surface": "of",
     "pos": "G"
   },
   {
-    "term": "compatibility",
+    "surface": "compatibility",
     "pos": "NNP"
   },
   {
-    "term": "of",
+    "surface": "of",
     "pos": "G"
   },
   {
-    "term": "a",
+    "surface": "a",
     "pos": "G"
   },
   {
-    "term": "system",
+    "surface": "system",
     "pos": "NNP"
   },
   {
-    "term": "of",
+    "surface": "of",
     "pos": "G"
   },
   {
-    "term": "linear",
+    "surface": "linear",
     "pos": "NNP"
   },
   {
-    "term": "diophantine",
+    "surface": "diophantine",
     "pos": "NNP"
   },
   {
-    "term": "equations",
+    "surface": "equations",
     "pos": "NNP"
   },
   {
-    "term": "strict",
+    "surface": "strict",
     "pos": "G"
   },
   {
-    "term": "inequations",
+    "surface": "inequations",
     "pos": "NNP"
   },
   {
-    "term": "and",
+    "surface": "and",
     "pos": "G"
   },
   {
-    "term": "nonstrict",
+    "surface": "nonstrict",
     "pos": "NNP"
   },
   {
-    "term": "inequations",
+    "surface": "inequations",
     "pos": "NNP"
   },
   {
-    "term": "are",
+    "surface": "are",
     "pos": "G"
   },
   {
-    "term": "considered",
+    "surface": "considered",
     "pos": "G"
   },
   {
-    "term": "upper",
+    "surface": "upper",
     "pos": "NNP"
   },
   {
-    "term": "bounds",
+    "surface": "bounds",
     "pos": "NNP"
   },
   {
-    "term": "for",
+    "surface": "for",
     "pos": "G"
   },
   {
-    "term": "components",
+    "surface": "components",
     "pos": "NNP"
   },
   {
-    "term": "of",
+    "surface": "of",
     "pos": "G"
   },
   {
-    "term": "a",
+    "surface": "a",
     "pos": "G"
   },
   {
-    "term": "minimal",
+    "surface": "minimal",
     "pos": "NNP"
   },
   {
-    "term": "set",
+    "surface": "set",
     "pos": "G"
   },
   {
-    "term": "of",
+    "surface": "of",
     "pos": "G"
   },
   {
-    "term": "solutions",
+    "surface": "solutions",
     "pos": "NNP"
   },
   {
-    "term": "and",
+    "surface": "and",
     "pos": "G"
   },
   {
-    "term": "algorithms",
+    "surface": "algorithms",
     "pos": "NNP"
   },
   {
-    "term": "of",
+    "surface": "of",
     "pos": "G"
   },
   {
-    "term": "construction",
+    "surface": "construction",
     "pos": "NNP"
   },
   {
-    "term": "of",
+    "surface": "of",
     "pos": "G"
   },
   {
-    "term": "minimal",
+    "surface": "minimal",
     "pos": "NNP"
   },
   {
-    "term": "generating",
+    "surface": "generating",
     "pos": "G"
   },
   {
-    "term": "sets",
+    "surface": "sets",
     "pos": "NNP"
   },
   {
-    "term": "of",
+    "surface": "of",
     "pos": "G"
   },
   {
-    "term": "solutions",
+    "surface": "solutions",
     "pos": "NNP"
   },
   {
-    "term": "for",
+    "surface": "for",
     "pos": "G"
   },
   {
-    "term": "all",
+    "surface": "all",
     "pos": "G"
   },
   {
-    "term": "types",
+    "surface": "types",
     "pos": "NNP"
   },
   {
-    "term": "of",
+    "surface": "of",
     "pos": "G"
   },
   {
-    "term": "systems",
+    "surface": "systems",
     "pos": "NNP"
   },
   {
-    "term": "are",
+    "surface": "are",
     "pos": "G"
   },
   {
-    "term": "given",
+    "surface": "given",
     "pos": "G"
   },
   {
-    "term": "these",
+    "surface": "these",
     "pos": "G"
   },
   {
-    "term": "criteria",
+    "surface": "criteria",
     "pos": "NNP"
   },
   {
-    "term": "and",
+    "surface": "and",
     "pos": "G"
   },
   {
-    "term": "the",
+    "surface": "the",
     "pos": "G"
   },
   {
-    "term": "corresponding",
+    "surface": "corresponding",
     "pos": "G"
   },
   {
-    "term": "algorithms",
+    "surface": "algorithms",
     "pos": "G"
   },
   {
-    "term": "for",
+    "surface": "for",
     "pos": "G"
   },
   {
-    "term": "constructing",
+    "surface": "constructing",
     "pos": "G"
   },
   {
-    "term": "a",
+    "surface": "a",
     "pos": "G"
   },
   {
-    "term": "minimal",
+    "surface": "minimal",
     "pos": "NNP"
   },
   {
-    "term": "supporting",
+    "surface": "supporting",
     "pos": "G"
   },
   {
-    "term": "set",
+    "surface": "set",
     "pos": "G"
   },
   {
-    "term": "of",
+    "surface": "of",
     "pos": "G"
   },
   {
-    "term": "solutions",
+    "surface": "solutions",
     "pos": "G"
   },
   {
-    "term": "can",
+    "surface": "can",
     "pos": "G"
   },
   {
-    "term": "be",
+    "surface": "be",
     "pos": "G"
   },
   {
-    "term": "used",
+    "surface": "used",
     "pos": "G"
   },
   {
-    "term": "in",
+    "surface": "in",
     "pos": "G"
   },
   {
-    "term": "solving",
+    "surface": "solving",
     "pos": "G"
   },
   {
-    "term": "all",
+    "surface": "all",
     "pos": "G"
   },
   {
-    "term": "the",
+    "surface": "the",
     "pos": "G"
   },
   {
-    "term": "considered",
+    "surface": "considered",
     "pos": "G"
   },
   {
-    "term": "types",
+    "surface": "types",
     "pos": "NNP"
   },
   {
-    "term": "systems",
+    "surface": "systems",
     "pos": "NNP"
   },
   {
-    "term": "and",
+    "surface": "and",
     "pos": "G"
   },
   {
-    "term": "systems",
+    "surface": "systems",
     "pos": "NNP"
   },
   {
-    "term": "of",
+    "surface": "of",
     "pos": "G"
   },
   {
-    "term": "mixed",
+    "surface": "mixed",
     "pos": "G"
   },
   {
-    "term": "types",
+    "surface": "types",
     "pos": "NNP"
   }
 ]

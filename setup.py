@@ -46,12 +46,10 @@ setup(
     include_package_data=True,
     install_requires=[
         'numpy',
-        'tqdm',
     ],
     setup_requires=[
     ],
     extras_require={
-        'viz': ['networkx', 'matplotlib', 'pygraphviz'],
         'test': ['pytest'],
     },
     keywords=["NLP"],
