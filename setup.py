@@ -2,7 +2,7 @@ import re
 from setuptools import setup, find_packages
 
 def get_version(project_name):
-    regex = re.compile(r"^__version__ = '(\d+\.\d+\.\d+)'$")
+    regex = re.compile(r"""^__version__ = ["'](\d+\.\d+\.\d+)["']$""")
     with open(f"{project_name}/__init__.py") as f:
         for line in f:
             m = regex.match(line)
