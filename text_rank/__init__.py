@@ -1,4 +1,4 @@
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 
 # This is a new name to reference the text_rank as a modules instead of the function.
 # This is used for mocking when testing while still allowing for `from text_rank import text_rank`
