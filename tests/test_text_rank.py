@@ -36,5 +36,23 @@ def test_sum_edges():
         test()
 
 
-def test_accum():
-    gold = random.randint(0, 1)
+def test_accumulate_score():
+    pass
+
+def test_init_list():
+    pass
+
+def test_init_matrix():
+    pass
+
+def test_update_list():
+    pass
+
+def test_update_matrix():
+    pass
+
+def test_output_list():
+    pass
+
+def test_output_matrix():
+    pass
