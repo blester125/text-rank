@@ -1,19 +1,21 @@
-import re
+import ast
+from typing import Optional
 from setuptools import setup, find_packages
 
 
-def get_version(project_name):
-    regex = re.compile(r"""^__version__ = ["'](\d+\.\d+\.\d+)["']$""")
-    with open(f"{project_name}/__init__.py") as f:
-        for line in f:
-            m = regex.match(line)
-            if m is not None:
-                return m.groups(1)[0]
+def get_version(file_name: str, version_name: str = "__version__") -> Optional[str]:
+    with open(file_name) as f:
+        tree = ast.parse(f.read())
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Assign):
+                if node.targets[0].id == version_name:
+                    return node.value.s
+    raise ValueError(f"Unable to find an assignment to the variable {version_name}")
 
 
 class About(object):
-    NAME = "text_rank"
-    VERSION = get_version(NAME)
+    NAME = "text-rank"
+    VERSION = get_version(f"text_rank/__init__.py")
     AUTHOR = "blester125"
     EMAIL = f"{AUTHOR}@gmail.com"
     URL = f"https://github.com/{AUTHOR}/{NAME}"
@@ -23,6 +25,7 @@ class About(object):
 
 
 ext_modules = []
+
 
 setup(
     name=About.NAME,
@@ -49,7 +52,7 @@ setup(
     install_requires=["numpy",],
     setup_requires=[],
     extras_require={"test": ["pytest"],},
-    keywords=["NLP"],
+    keywords=["NLP", "Summarization", "Keyword Extraction", "Text Rank", "Page Rank", "Graph"],
     entry_points={"console_scripts": ["text-rank-demo = text_rank.demo:main", "text-rank = text_rank.main:main",],},
     ext_modules=ext_modules,
     classifiers={

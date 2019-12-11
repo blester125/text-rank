@@ -2,16 +2,14 @@ import math
 import random
 import string
 from itertools import chain
-from text_rank.utils import filter_pos, overlap, build_vocab
+from unittest.mock import patch, call
+from text_rank.utils import filter_pos, overlap, build_vocab, cooccurrence, norm_token, norm_sentence
+
+# Import random string utility
+from utils import rand_str
 
 
 TRIALS = 100
-
-
-def rand_str(length=None, min_=3, max_=7):
-    if length is None:
-        length = random.randint(min_, max_)
-    return "".join(random.choice(string.ascii_lowercase) for _ in range(length))
 
 
 def test_filter_pos_adj():
@@ -90,7 +88,9 @@ def test_overlap():
 
 
 def test_overlap_match_length_one():
-    pass
+    gold = 1.0803737332167307
+    s1 = s2 = rand_str()
+    assert math.isclose(overlap(s1, s2), gold)
 
 
 def test_overlap_mismatch_length_one():
@@ -119,3 +119,44 @@ def test_build_vocab():
 
     for _ in range(TRIALS):
         test()
+
+
+def test_cooccurrence():
+    def test():
+        s1 = rand_str()
+        s2 = rand_str()
+        kwargs = {rand_str(): rand_str() for _ in range(random.randint(0, 10))}
+        res = cooccurrence(s1, s2, **kwargs)
+        assert res == 1
+
+    for _ in range(TRIALS):
+        test()
+
+
+def test_norm_token():
+    def test():
+        gold = rand_str()
+        token = []
+        for char in gold:
+            if random.choice([True, False]):
+                token.append(char.upper())
+            else:
+                token.append(char)
+            while random.random() < 0.3:
+                token.append(random.choice(string.punctuation))
+        token = "".join(token)
+        res = norm_token(token)
+        assert res == gold
+
+    for _ in range(TRIALS):
+        test()
+
+
+def test_norm_sentence():
+    sentence = [rand_str() for _ in range(random.randint(1, 10))]
+    with patch("text_rank.utils.norm_token") as norm_patch:
+        norm_patch.side_effect = sentence
+        res = norm_sentence(" ".join(sentence))
+        for token in sentence:
+            assert call(token) in norm_patch.call_args_list
+        assert res == " ".join(sentence)
