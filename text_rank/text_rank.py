@@ -69,7 +69,7 @@ def text_rank_init_list(graph: AdjacencyList, seed: Optional[int] = None) -> Tup
 @text_rank_init.register(AdjacencyMatrix)
 def text_rank_init_matrix(graph: AdjacencyMatrix, seed: Optional[int] = None) -> Tuple[np.ndarray, np.ndarray]:
     np.random.seed(seed)
-    ws = np.random.rand(graph.vertex_count, 1)
+    ws = np.random.rand(graph.vertex_count)
     denom = np.reshape(np.sum(graph.adjacency_matrix, axis=1), (-1, 1))
     # If the sum off all outgoing edges of V_j is 0.0 then the incoming edge from V_j to V_i will be 0.0
     # We can use anything as the denominator and the value will still be zero
@@ -113,8 +113,8 @@ def text_rank_update_list(
 def text_rank_update_matrix(
     graph: AdjacencyMatrix, ws: np.ndarray, denom: np.ndarray, dampening: float = 0.85
 ) -> np.ndarray:
-    update = np.sum(graph.adjacency_matrix / denom * ws, axis=0)
-    ws = np.reshape((1 - dampening) + dampening * update, (-1, 1))
+    update = np.dot(ws, graph.adjacency_matrix / denom)
+    ws = (1 - dampening) + dampening * update
     return ws
 
 
