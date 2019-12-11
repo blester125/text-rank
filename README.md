@@ -2,7 +2,7 @@
 
 ##
 
-[![PyPi Version](https://img.shields.io/pypi/v/text-rank.svg)](https://pypi.org/project/text-rank/)
+[![PyPi Version](https://img.shields.io/pypi/v/text-rank)](https://pypi.org/project/text-rank/)
 
 [![Actions Status](https://github.com/blester125/text-rank/workflows/Unit%20Test/badge.svg)](https://github.com/blester125/text-rank/actions)
 
