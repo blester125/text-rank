@@ -1,2 +1,4 @@
 matplotlib
 black
+tensorflow>=2
+tensorflow_hub
