@@ -1,3 +1,7 @@
+def test_create_summary_graph():
+    pass
+
+
 def test_summarize():
     pass
 
