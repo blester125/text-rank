@@ -1,8 +1,8 @@
 __version__ = "0.3.4"
 
-# This is a new name to reference the text_rank as a modules instead of the function.
+# This is a new name to reference the text_rank as a module instead of the function.
 # This is used for mocking when testing while still allowing for `from text_rank import text_rank`
-# by and end user
+# by an end user
 import text_rank.text_rank as text_rank_module
 from text_rank.text_rank import text_rank
 from text_rank.keywords import keywords
