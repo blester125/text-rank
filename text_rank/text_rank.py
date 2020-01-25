@@ -31,10 +31,7 @@ def accumulate_score(vertex: Vertex, ws: List[float], denom: List[float]):
     :param denom: The precomputed sum of outgoing edges for each node in the graph
     :returns: The sum of incoming scores weighted by incoming edge strength normalized by outgoing strengths
     """
-    acc = []
-    for edge, weight in vertex.edges_in.items():
-        acc.append(weight / denom[edge] * ws[edge])
-    return math.fsum(acc)
+    return math.fsum([weight / denom[edge] * ws[edge] for edge, weight in vertex.edges_in.items()])
 
 
 @singledispatch
