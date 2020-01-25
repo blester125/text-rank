@@ -35,8 +35,9 @@ print(f"The denominator when each sentence is length 1 should be {one_denom}")
 
 try:
     import matplotlib.pyplot as plt
-    plt.plot(x, y, label='real')
-    plt.plot(np.arange(0, args.max), p(np.arange(0, args.max)), '--', label="fit")
+
+    plt.plot(x, y, label="real")
+    plt.plot(np.arange(0, args.max), p(np.arange(0, args.max)), "--", label="fit")
     plt.xlim(0, args.max)
 
     plt.title(f"Best fit with degree={best_degree}, residual={best_res}, One should use {one_denom} as the denominator")

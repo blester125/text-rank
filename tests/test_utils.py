@@ -15,28 +15,28 @@ def rand_str(length=None, min_=3, max_=7):
 
 
 def test_filter_pos_adj():
-    token = {'pos': 'ADJ'}
+    token = {"pos": "ADJ"}
     assert filter_pos(token) is True
 
 
 def test_filter_pos_cd():
-    token = {'pos': 'CD'}
+    token = {"pos": "CD"}
     assert filter_pos(token) is True
 
 
 def test_filter_pos_noun():
-    token = {'pos': 'NNP'}
+    token = {"pos": "NNP"}
     assert filter_pos(token) is True
 
 
 def test_filter_pos_j():
-    token = {'pos': 'JJ'}
+    token = {"pos": "JJ"}
     assert filter_pos(token) is True
 
 
 def test_filter_pos_other():
     def test():
-        token = {'pos': rand_str()}
+        token = {"pos": rand_str()}
         assert filter_pos(token) is False
 
     for _ in range(TRIALS):
@@ -46,8 +46,8 @@ def test_filter_pos_other():
 def test_overlap():
     def test():
         intersection = random.randint(0, 10)
-        len_1 = random.randint(intersection, intersection+random.randint(1, 5))
-        len_2 = random.randint(intersection, intersection+random.randint(1, 5))
+        len_1 = random.randint(intersection, intersection + random.randint(1, 5))
+        len_2 = random.randint(intersection, intersection + random.randint(1, 5))
         len_1 = max(1, len_1)
         len_2 = max(1 if len_1 != 1 else 2, len_2)
         union = math.log(len_1) + math.log(len_2)
