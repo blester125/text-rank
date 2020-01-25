@@ -39,6 +39,19 @@ class Vertex:
         """A summary of this vertex."""
         return f"V(term={self.value}, in={self.degree_in}, out={self.degree_out})"
 
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Vertex):
+            raise TypeError(f"Can only compare to other Vertex objects, got {type(other)}")
+        if self is other:
+            return True
+        if self.value != other.value:
+            return False
+        if self._edges_out != other._edges_out:
+            return False
+        if self._edges_in != other._edges_in:
+            return False
+        return True
+
 
 class Graph:
     def __init__(self, vertices: Union[Dict[str, int], List[str]]):
@@ -48,6 +61,8 @@ class Graph:
             If the latter then indices are assigned in order
         """
         if isinstance(vertices, dict):
+            if set(vertices.values()) != set(range(len(vertices))):
+                raise ValueError("Vertex indices must be contiguous")
             self.label2idx: Dict[str, int] = vertices
         else:
             self.label2idx: Dict[str, int] = {n: i for i, n in enumerate(vertices)}
@@ -102,6 +117,7 @@ class Graph:
         :param source: The vertex label or index of the edge source
         :param target: The vertex label or index of the edge target
         :param weight: The weight to put on the edge
+        :raises ValueError: When the source and target node are the same
         """
         raise NotImplementedError
 
@@ -165,7 +181,7 @@ class AdjacencyList(Graph):
         """A directed simple graph represented as an AdjacencyList.
 
         Note:
-            This is slightly different than a true adjacency list, it is a list of Vertex
+            This is slightly different than a true adjacency list, it is a List of Vertex
             object rather than a list of lists. The Vertex objects help things like labels
             and dicts of the edges. This gives faster lookup for specific edges compared
             to a normal adjacency list.
@@ -174,22 +190,26 @@ class AdjacencyList(Graph):
             If the latter then indices are assigned in order
         """
         super().__init__(vertices)
-        self._vertices: List[Vertex] = [Vertex(k) for k in self.label2idx]
+        self._vertices: List[Vertex] = [Vertex(l) for l in self.label2idx]
 
     @property
     def vertices(self) -> List[Vertex]:
         """The vertices in this graph."""
         return self._vertices
 
-    def add_vertex(self, label: Optional[str]) -> str:
+    def add_vertex(self, label: Optional[str]) -> int:
         """Add a vertex to the graph.
 
         :param label: The label to give the new vertex.
-        :returns: The vertex label
+        :returns: The vertex index
         """
-        label = self._add_vertex(label)
-        self.vertices.insert(self.label2idx, Vertex(label))
-        return label
+        idx = self._add_vertex(label)
+        if idx != len(self.vertices):
+            raise ValueError(
+                "The added vertex has a label that is out of order, expected: {len(self.vertices)} found: {idx}"
+            )
+        self.vertices.append(Vertex(label))
+        return idx
 
     def add_edge(self, source: Union[str, int], target: Union[str, int], weight: float = 1.0) -> None:
         """Add an edge to the graph.
@@ -200,6 +220,8 @@ class AdjacencyList(Graph):
         """
         source_idx = source if isinstance(source, int) else self[source]
         target_idx = target if isinstance(target, int) else self[target]
+        if source_idx == target_idx:
+            raise ValueError(f"Self loops are not allowed, found edge with source and target if {source_idx}")
         source_vertex = self.vertices[source_idx]
         target_vertex = self.vertices[target_idx]
         source_vertex.edges_out[target_idx] = weight
@@ -309,17 +331,21 @@ class AdjacencyMatrix(Graph):
         """
         return self._adjacency_matrix
 
-    def add_vertex(self, label: Optional[str]) -> str:
+    def add_vertex(self, label: Optional[str]) -> int:
         """Add a vertex to the graph.
 
         :param label: The label to give the new vertex.
-        :returns: The vertex label
+        :returns: The vertex index
         """
-        label = self._add_vertex(label)
-        adj = np.zeros((len(self.label2idx), len(self.label2idx)))
-        adj[: self._adjacency_matrix.shape[0], : self._adjacency_matrix.shape[1]] = self._adjacency_matrix
+        idx = self._add_vertex(label)
+        if idx != self._adjacency_matrix.shape[0]:
+            raise ValueError(
+                "The added vertex has a label that is out of order, expected: {self.adjacency_matrix.shape[0]} found: {idx}"
+            )
+        adj = np.zeros((idx + 1, idx + 1))
+        adj[: self.adjacency_matrix.shape[0], : self.adjacency_matrix.shape[1]] = self.adjacency_matrix
         self._adjacency_matrix = adj
-        return label
+        return idx
 
     def add_edge(self, source: Union[str, int], target: Union[str, int], weight: float = 1.0) -> None:
         """Add an edge to the graph.
@@ -330,6 +356,8 @@ class AdjacencyMatrix(Graph):
         """
         source_idx = source if isinstance(source, int) else self[source]
         target_idx = target if isinstance(target, int) else self[target]
+        if source_idx == target_idx:
+            raise ValueError(f"Self loops are not allowed, found edge with source and target if {source_idx}")
         self.adjacency_matrix[source_idx, target_idx] = weight
 
     @property
