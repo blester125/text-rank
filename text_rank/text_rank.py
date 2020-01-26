@@ -3,7 +3,7 @@ import random
 from enum import Enum
 from operator import itemgetter
 from functools import singledispatch
-from typing import List, Tuple, Dict, Optional
+from typing import List, Tuple, Dict, Optional, Any
 import numpy as np
 from text_rank.graph import Graph, AdjacencyList, AdjacencyMatrix, Vertex
 
@@ -11,7 +11,7 @@ from text_rank.graph import Graph, AdjacencyList, AdjacencyMatrix, Vertex
 ConvergenceType = Enum("ConvergenceType", "ALL ANY")
 
 
-def sum_edges(edges: Dict[str, float]) -> float:
+def sum_edges(edges: Dict[Any, float]) -> float:
     """Calculate the total weight for a collection of edges.
 
     These edges are represented as a target -> weight mapping and is based on the representation

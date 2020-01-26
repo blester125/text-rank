@@ -224,7 +224,7 @@ class AdjacencyList(Graph):
         source_idx = source if isinstance(source, int) else self[source]
         target_idx = target if isinstance(target, int) else self[target]
         if source_idx == target_idx:
-            raise ValueError(f"Self loops are not allowed, found edge with source and target if {source_idx}")
+            raise ValueError(f"Self loops are not allowed, found edge with source and target of {source_idx}")
         source_vertex = self.vertices[source_idx]
         target_vertex = self.vertices[target_idx]
         source_vertex.edges_out[target_idx] = weight

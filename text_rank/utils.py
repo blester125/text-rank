@@ -46,7 +46,7 @@ def overlap(s1: str, s2: str, **kwargs) -> float:
     Note:
         There is a weird edge case in this function when both sets have a single word. This results
         in a denominator of 0.0 which causes an error. I am currently forcing the denominator to
-        `0.9256056207721526` in this case. This makes since because then both of them are a single
+        `0.9256056207721526` in this case. This makes sense because then both of them are a single
         word, there are two cases, one where the overlap is `0`, this results in a weight of `0` which
         makes sense. The other case is when they match. This results in a `1.0803737332167307` which
         was calculated by fitting this function and finding the value it predicts for `1`. See
