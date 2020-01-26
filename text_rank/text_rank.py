@@ -35,7 +35,7 @@ def accumulate_score(vertex: Vertex, ws: List[float], denom: List[float]):
 
 
 @singledispatch
-def text_rank_init(graph: Graph, seed: Optional[int] = None) -> Tuple[List[float], List[float]]:
+def text_rank_init(graph: Graph, uniform: bool = False, seed: Optional[int] = None) -> Tuple[List[float], List[float]]:
     """Generate the initial scores for each node and pre-compute the outgoing strength.
 
     The sum of the weights for outbound edges for a given node doesn't change as text rank runs because
@@ -43,6 +43,7 @@ def text_rank_init(graph: Graph, seed: Optional[int] = None) -> Tuple[List[float
     it instead of always recalculating it.
 
     :param graph: The graph we will run text rank on
+    :param uniform: Should we initialize state vector to have equal prob for each node?
     :param seed: A seed for the RNG if we want reproduceability
     :returns: The initial scores for each node and the edge normalization factor for each node
     """
@@ -50,20 +51,33 @@ def text_rank_init(graph: Graph, seed: Optional[int] = None) -> Tuple[List[float
 
 
 @text_rank_init.register(AdjacencyList)
-def text_rank_init_list(graph: AdjacencyList, seed: Optional[int] = None) -> Tuple[List[float], List[float]]:
+def text_rank_init_list(
+    graph: AdjacencyList, uniform: bool = False, seed: Optional[int] = None
+) -> Tuple[List[float], List[float]]:
     random.seed(seed)
     denom = [sum_edges(v.edges_out) for v in graph.vertices]
     # If the sum off all outgoing edges of V_j is 0.0 then the incoming edge from V_j to V_i will be 0.0
     # We can use anything as the denominator and the value will still be zero
     denom = [d if d != 0.0 else 1.0 for d in denom]
-    ws = [random.random() for _ in graph.vertices]
+    if uniform:
+        ws = [1 / len(graph.vertices) for _ in graph.vertices]
+    else:
+        ws = [random.random() for _ in graph.vertices]
+        norm = sum(ws)
+        ws = [w / norm for w in ws]
     return ws, denom
 
 
 @text_rank_init.register(AdjacencyMatrix)
-def text_rank_init_matrix(graph: AdjacencyMatrix, seed: Optional[int] = None) -> Tuple[np.ndarray, np.ndarray]:
+def text_rank_init_matrix(
+    graph: AdjacencyMatrix, uniform: bool = False, seed: Optional[int] = None
+) -> Tuple[np.ndarray, np.ndarray]:
     random.seed(seed)
-    ws = np.array([random.random() for _ in range(graph.vertex_count)])
+    if uniform:
+        ws = np.ones(graph.vertex_count) / graph.vertex_count
+    else:
+        ws = np.array([random.random() for _ in range(graph.vertex_count)])
+        ws = ws / np.sum(ws)
     denom = np.reshape(np.sum(graph.adjacency_matrix, axis=1), (-1, 1))
     # If the sum off all outgoing edges of V_j is 0.0 then the incoming edge from V_j to V_i will be 0.0
     # We can use anything as the denominator and the value will still be zero
@@ -115,11 +129,14 @@ def text_rank_output(graph: Graph, ws: List[float]) -> List[Tuple[str, float]]:
 
 @text_rank_output.register(AdjacencyList)
 def text_rank_output_list(graph: AdjacencyList, ws: List[float]) -> List[Tuple[str, float]]:
+    norm = sum(ws)
+    ws = [w / norm for w in ws]
     return sorted(zip(map(lambda v: v.value, graph.vertices), ws), key=itemgetter(1), reverse=True)
 
 
 @text_rank_output.register(AdjacencyMatrix)
 def text_rank_output_matrix(graph: AdjacencyMatrix, ws: np.ndarray) -> List[Tuple[str, float]]:
+    ws = ws / np.sum(ws)
     return sorted(zip(graph.label2idx.keys(), ws), key=itemgetter(1), reverse=True)
 
 
@@ -129,6 +146,7 @@ def text_rank(
     convergence: float = 0.0001,
     convergence_type: ConvergenceType = ConvergenceType.ALL,
     niter: int = 200,
+    uniform: bool = False,
     seed: Optional[int] = None,
 ) -> List[Tuple[str, float]]:
     """Implementation of text rank from here https://www.aclweb.org/anthology/W04-3252.pdf
@@ -139,6 +157,7 @@ def text_rank(
         we stop updating the graph. Set to `0` to turn off early stopping.
     :param convergence_type: Should we stop when all nodes move less than `convergence` or when a single node does
     :param niter: An upper bound on the number of iterations to run
+    :param uniform: Should we initialize state vector to have equal prob for each node?
     :param seed: A reproducability seed to initialization of the node scores.
 
     :returns: Pairs of (node label, scores) sorted by score
@@ -147,7 +166,7 @@ def text_rank(
         raise ValueError(f"dampening must be between `0` and `1`, got {dampening}")
     converge = all if convergence_type is ConvergenceType.ALL else any
 
-    ws_prev, denom = text_rank_init(graph, seed)
+    ws_prev, denom = text_rank_init(graph, uniform=uniform, seed=seed)
 
     for _ in range(niter):
         ws = text_rank_update(graph, ws_prev, denom, dampening)

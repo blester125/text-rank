@@ -22,6 +22,19 @@ from utils import rand_str
 
 
 TRIALS = 100
+GOLD_SEED = 1337
+GOLD_WS = [
+    0.11241286838510592,
+    0.09703866532611793,
+    0.0665736515734767,
+    0.10659608608017906,
+    0.03015021720224241,
+    0.1500117991660606,
+    0.0698230006775505,
+    0.14368633275201811,
+    0.1677271414904536,
+    0.05598023734679501,
+]
 
 
 def test_sum_edges():
@@ -58,22 +71,9 @@ def test_init_list_shapes():
 
 
 def test_init_list_ws_inits():
-    seed = 1337
-    gold_ws = [
-        0.6177528569514706,
-        0.5332655736050008,
-        0.36584835924937553,
-        0.5857873539022715,
-        0.16568728368878083,
-        0.8243737469076314,
-        0.38370480861420864,
-        0.7896128249156874,
-        0.9217265098962596,
-        0.30763338797950246,
-    ]
-    graph = MagicMock(vertices=[MagicMock() for _ in range(len(gold_ws))])
-    ws, _ = text_rank_init_list(graph, seed=seed)
-    for w, gw in zip(ws, gold_ws):
+    graph = MagicMock(vertices=[MagicMock() for _ in range(len(GOLD_WS))])
+    ws, _ = text_rank_init_list(graph, seed=GOLD_SEED)
+    for w, gw in zip(ws, GOLD_WS):
         assert math.isclose(w, gw)
 
 
@@ -92,6 +92,22 @@ def test_init_list_d_norms():
             assert math.isclose(d, g)
 
 
+def test_init_list_sum_to_one():
+    graph = MagicMock(vertices=[MagicMock() for _ in range(random.randint(10, 100))])
+    ws, _ = text_rank_init_list(graph)
+    assert math.isclose(sum(ws), 1)
+
+
+def test_init_list_uniform():
+    graph = MagicMock(vertices=[MagicMock() for _ in range(random.randint(10, 100))])
+    golds = [1 for _ in graph.vertices]
+    norm = sum(golds)
+    golds = [g / norm for g in golds]
+    ws, _ = text_rank_init_list(graph, uniform=True)
+    for w, g in zip(ws, golds):
+        assert math.isclose(w, g)
+
+
 def test_init_matrix_shapes():
     verts = random.randint(10, 100)
     graph = MagicMock(vertex_count=verts, adjacency_matrix=np.random.rand(verts, verts))
@@ -100,24 +116,9 @@ def test_init_matrix_shapes():
 
 
 def test_init_matrix_ws_inits():
-    seed = 1337
-    gold_ws = np.array(
-        [
-            0.6177528569514706,
-            0.5332655736050008,
-            0.36584835924937553,
-            0.5857873539022715,
-            0.16568728368878083,
-            0.8243737469076314,
-            0.38370480861420864,
-            0.7896128249156874,
-            0.9217265098962596,
-            0.30763338797950246,
-        ]
-    )
-    graph = MagicMock(vertex_count=len(gold_ws), adjacency_matrix=np.random.rand(len(gold_ws), len(gold_ws)))
-    ws, _ = text_rank_init_matrix(graph, seed=seed)
-    np.testing.assert_allclose(ws, gold_ws)
+    graph = MagicMock(vertex_count=len(GOLD_WS), adjacency_matrix=np.random.rand(len(GOLD_WS), len(GOLD_WS)))
+    ws, _ = text_rank_init_matrix(graph, seed=GOLD_SEED)
+    np.testing.assert_allclose(ws, np.array(GOLD_WS))
 
 
 def test_init_matrix_d_norms():
@@ -133,6 +134,23 @@ def test_init_matrix_d_norms():
         _, denom = text_rank_init_matrix(graph)
         for d, g in zip(denom, gold):
             assert math.isclose(d, g)
+
+
+def test_init_matrix_sum_to_one():
+    verts = random.randint(10, 100)
+    graph = MagicMock(vertex_count=verts, adjacency_matrix=np.random.rand(verts, verts))
+    ws, _ = text_rank_init_matrix(graph)
+    assert math.isclose(sum(ws), 1)
+
+
+def test_init_matrix_uniform():
+    verts = random.randint(10, 100)
+    graph = MagicMock(vertex_count=verts, adjacency_matrix=np.random.rand(verts, verts))
+    golds = [1 for _ in graph.vertices]
+    norm = sum(golds)
+    golds = [g / norm for g in golds]
+    ws, _ = text_rank_init_list(graph, uniform=True)
+    np.testing.assert_allclose(ws, np.array(golds))
 
 
 def test_update_list():
@@ -168,10 +186,20 @@ def test_output_list():
     ws = np.random.rand(v)
     gold_labels = [verts[i] for i in np.argsort(ws)[::-1]]
     gold_score = np.sort(ws)[::-1]
+    gold_score = gold_score / np.sum(gold_score)
     res = text_rank_output_list(graph, ws)
     for gl, gs, (l, s) in zip(gold_labels, gold_score, res):
         assert l == gl
         assert math.isclose(s, gs)
+
+
+def test_output_list_sum_to_one():
+    v = random.randint(2, 10)
+    verts = [rand_str() for _ in range(v)]
+    graph = MagicMock(vertices=[Vertex(v) for v in verts])
+    ws = np.random.rand(v)
+    scores = [x[1] for x in text_rank_output_list(graph, ws)]
+    assert math.isclose(sum(scores), 1)
 
 
 def test_output_matrix():
@@ -181,10 +209,20 @@ def test_output_matrix():
     ws = np.random.rand(v)
     gold_labels = [verts[i] for i in np.argsort(ws)[::-1]]
     gold_score = np.sort(ws)[::-1]
+    gold_score = gold_score / np.sum(gold_score)
     res = text_rank_output_matrix(graph, ws)
     for gl, gs, (l, s) in zip(gold_labels, gold_score, res):
         assert l == gl
         assert math.isclose(s, gs)
+
+
+def test_output_matrix_sum_to_one():
+    v = random.randint(2, 10)
+    verts = [rand_str() for _ in range(v)]
+    graph = MagicMock(label2idx={v: None for v in verts})
+    ws = np.random.rand(v)
+    scores = [x[1] for x in text_rank_output_matrix(graph, ws)]
+    assert math.isclose(sum(scores), 1)
 
 
 def random_graphs(p=None, min_vert=10, max_vert=100):
@@ -210,3 +248,22 @@ def test_text_rank():
     for (g1_label, g1_score), (g2_label, g2_score) in zip(g1_out, g2_out):
         assert g1_label == g2_label
         math.isclose(g1_score, g2_score)
+
+
+def test_text_rank_mining_massive_datasets():
+    """"This is testing with a worked example from here:
+            http://infolab.stanford.edu/~ullman/mmds/ch5.pdf
+    """
+    g = AdjacencyMatrix(list("ABCD"))
+    g.add_edge("A", "B")
+    g.add_edge("A", "C")
+    g.add_edge("A", "D")
+    g.add_edge("B", "A")
+    g.add_edge("B", "D")
+    g.add_edge("C", "A")
+    g.add_edge("D", "B")
+    g.add_edge("D", "C")
+    gold = np.array([3 / 9, 2 / 9, 2 / 9, 2 / 9])
+
+    scores = [x[1] for x in text_rank(g, dampening=1, convergence=0)]
+    np.testing.assert_allclose(scores, gold)
