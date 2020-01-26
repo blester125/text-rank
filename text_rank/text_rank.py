@@ -62,8 +62,8 @@ def text_rank_init_list(graph: AdjacencyList, seed: Optional[int] = None) -> Tup
 
 @text_rank_init.register(AdjacencyMatrix)
 def text_rank_init_matrix(graph: AdjacencyMatrix, seed: Optional[int] = None) -> Tuple[np.ndarray, np.ndarray]:
-    np.random.seed(seed)
-    ws = np.random.rand(graph.vertex_count)
+    random.seed(seed)
+    ws = np.array([random.random() for _ in range(graph.vertex_count)])
     denom = np.reshape(np.sum(graph.adjacency_matrix, axis=1), (-1, 1))
     # If the sum off all outgoing edges of V_j is 0.0 then the incoming edge from V_j to V_i will be 0.0
     # We can use anything as the denominator and the value will still be zero
@@ -91,7 +91,7 @@ def text_rank_update(graph: Graph, ws: List[float], denom: List[float], dampenin
 def text_rank_update_list(
     graph: AdjacencyList, ws: List[float], denom: List[float], dampening: float = 0.85
 ) -> List[float]:
-    updates = [accumulate_scores(v, ws, denom) for v in graph.vertices]
+    updates = [accumulate_score(v, ws, denom) for v in graph.vertices]
     # We collect the updated scores for each node and apply them after. If we were to apply these
     # updates as they happen we would get different results than from the vectorized version used
     # in the adjacency matrix version
@@ -120,7 +120,6 @@ def text_rank_output_list(graph: AdjacencyList, ws: List[float]) -> List[Tuple[s
 
 @text_rank_output.register(AdjacencyMatrix)
 def text_rank_output_matrix(graph: AdjacencyMatrix, ws: np.ndarray) -> List[Tuple[str, float]]:
-    ws = np.reshape(ws, (-1,))
     return sorted(zip(graph.label2idx.keys(), ws), key=itemgetter(1), reverse=True)
 
 

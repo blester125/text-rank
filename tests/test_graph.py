@@ -253,8 +253,10 @@ def test_add_node_matrix():
 
 def test_add_edge_list():
     graph = AdjacencyList([rand_str() for _ in range(random.randint(10, 100))])
-    source = random.randint(0, graph.vertex_count - 1)
-    target = random.randint(0, graph.vertex_count - 1)
+    source = target = 0
+    while source == target:
+        source = random.randint(0, graph.vertex_count - 1)
+        target = random.randint(0, graph.vertex_count - 1)
     weight = random.random()
 
     source_req = random.choice([source, graph[source]])
@@ -266,10 +268,24 @@ def test_add_edge_list():
     assert graph.vertices[target].edges_in[source] == weight
 
 
+def test_add_edge_greater_than_zero():
+    graph = AdjacencyList([rand_str() for _ in range(random.randint(10, 100))])
+    source = target = 0
+    while source == target:
+        source = random.randint(0, graph.vertex_count - 1)
+        target = random.randint(0, graph.vertex_count - 1)
+    weight = (random.random() + 0.01) * -1
+
+    with pytest.raises(ValueError):
+        graph.add_edge(source, target, weight)
+
+
 def test_add_edge_matrix():
     graph = AdjacencyMatrix([rand_str() for _ in range(random.randint(10, 100))])
-    source = random.randint(0, graph.vertex_count - 1)
-    target = random.randint(0, graph.vertex_count - 1)
+    source = target = 0
+    while source == target:
+        source = random.randint(0, graph.vertex_count - 1)
+        target = random.randint(0, graph.vertex_count - 1)
     weight = random.random()
 
     source_req = random.choice([source, graph[source]])
@@ -278,6 +294,18 @@ def test_add_edge_matrix():
     graph.add_edge(source_req, target_req, weight)
 
     assert graph.adjacency_matrix[source, target] == weight
+
+
+def test_add_edge_greater_than_zero():
+    graph = AdjacencyMatrix([rand_str() for _ in range(random.randint(10, 100))])
+    source = target = 0
+    while source == target:
+        source = random.randint(0, graph.vertex_count - 1)
+        target = random.randint(0, graph.vertex_count - 1)
+    weight = (random.random() + 0.01) * -1
+
+    with pytest.raises(ValueError):
+        graph.add_edge(source, target, weight)
 
 
 def test_density_half():
