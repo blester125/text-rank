@@ -117,7 +117,7 @@ class Graph:
         :param source: The vertex label or index of the edge source
         :param target: The vertex label or index of the edge target
         :param weight: The weight to put on the edge
-        :raises ValueError: When the source and target node are the same
+        :raises ValueError: When the source and target node are the same, when the weight is less than zero
         """
         raise NotImplementedError
 
@@ -217,7 +217,10 @@ class AdjacencyList(Graph):
         :param source: The vertex label or index of the edge source
         :param target: The vertex label or index of the edge target
         :param weight: The weight to put on the edge
+        :raises ValueError: When the source and target node are the same, when the weight is less than zero
         """
+        if weight < 0.0:
+            raise ValueError(f"Edge weight must be greater than zero, got {weight}")
         source_idx = source if isinstance(source, int) else self[source]
         target_idx = target if isinstance(target, int) else self[target]
         if source_idx == target_idx:
@@ -353,7 +356,10 @@ class AdjacencyMatrix(Graph):
         :param source: The vertex label or index of the edge source
         :param target: The vertex label or index of the edge target
         :param weight: The weight to put on the edge
+        :raises ValueError: When the source and target node are the same, when the weight is less than zero
         """
+        if weight < 0.0:
+            raise ValueError(f"Edge weight must be greater than zero, got {weight}")
         source_idx = source if isinstance(source, int) else self[source]
         target_idx = target if isinstance(target, int) else self[target]
         if source_idx == target_idx:
