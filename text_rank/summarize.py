@@ -8,7 +8,7 @@ def summarize(
     sentences: List[str],
     nsents: Optional[int] = None,
     keep_order: bool = True,
-    dampening: float = 0.85,
+    damping: float = 0.85,
     convergence: float = 0.0001,
     convergence_type: ConvergenceType = ConvergenceType.ALL,
     niter: int = 200,
@@ -24,7 +24,7 @@ def summarize(
         sentences to summarize divided by 3
     :param keep_order: Should summary sentences appear in the same order they appear in the in the
         text, if False sentences or ordered by their text rank score.
-    :param dampening: A scalar between 0 and 1. Used to simulate randomly jumping from one vertex to another.
+    :param damping: A scalar between 0 and 1. Used to simulate randomly jumping from one vertex to another.
     :param convergence: An early stopping criteria, when any or all of the node scores change by less than `convergence`
         we stop updating the graph. Set to `0` to turn off early stopping.
     :param convergence_type: Should we stop when all nodes move less than `convergence` or when a single node does
@@ -55,7 +55,7 @@ def summarize(
     if nsents is None:
         nsents = len(sentences) // 3
     selected = text_rank(
-        graph, dampening=dampening, convergence=convergence, convergence_type=convergence_type, niter=niter, seed=seed,
+        graph, damping=damping, convergence=convergence, convergence_type=convergence_type, niter=niter, seed=seed,
     )[:nsents]
     indices = [offsets[s[0]][0] for s in selected]
     if keep_order:

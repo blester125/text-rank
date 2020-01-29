@@ -86,7 +86,7 @@ def text_rank_init_matrix(
 
 
 @singledispatch
-def text_rank_update(graph: Graph, ws: List[float], denom: List[float], dampening: float = 0.85) -> List[float]:
+def text_rank_update(graph: Graph, ws: List[float], denom: List[float], damping: float = 0.85) -> List[float]:
     """Calculate new score for each node.
 
     This is the main step in text rank
@@ -94,7 +94,7 @@ def text_rank_update(graph: Graph, ws: List[float], denom: List[float], dampenin
     :param graph: The text rank graph
     :param ws: The scores for each node
     :param denom: The outbound weight normalization factor for each node, pre-computed for efficiency
-    :param dampening: A scalar between 0 and 1. Used to simulate randomly jumping from one vertex to another.
+    :param damping: A scalar between 0 and 1. Used to simulate randomly jumping from one vertex to another.
 
     :returns: The updated scores for each node
     """
@@ -103,22 +103,22 @@ def text_rank_update(graph: Graph, ws: List[float], denom: List[float], dampenin
 
 @text_rank_update.register(AdjacencyList)
 def text_rank_update_list(
-    graph: AdjacencyList, ws: List[float], denom: List[float], dampening: float = 0.85
+    graph: AdjacencyList, ws: List[float], denom: List[float], damping: float = 0.85
 ) -> List[float]:
     updates = [accumulate_score(v, ws, denom) for v in graph.vertices]
     # We collect the updated scores for each node and apply them after. If we were to apply these
     # updates as they happen we would get different results than from the vectorized version used
     # in the adjacency matrix version
-    ws = [(1 - dampening) + dampening * update for update in updates]
+    ws = [(1 - damping) + damping * update for update in updates]
     return ws
 
 
 @text_rank_update.register(AdjacencyMatrix)
 def text_rank_update_matrix(
-    graph: AdjacencyMatrix, ws: np.ndarray, denom: np.ndarray, dampening: float = 0.85
+    graph: AdjacencyMatrix, ws: np.ndarray, denom: np.ndarray, damping: float = 0.85
 ) -> np.ndarray:
     update = np.dot(ws, graph.adjacency_matrix / denom)
-    ws = (1 - dampening) + dampening * update
+    ws = (1 - damping) + damping * update
     return ws
 
 
@@ -142,7 +142,7 @@ def text_rank_output_matrix(graph: AdjacencyMatrix, ws: np.ndarray) -> List[Tupl
 
 def text_rank(
     graph: Graph,
-    dampening: float = 0.85,
+    damping: float = 0.85,
     convergence: float = 0.0001,
     convergence_type: ConvergenceType = ConvergenceType.ALL,
     niter: int = 200,
@@ -152,7 +152,7 @@ def text_rank(
     """Implementation of text rank from here https://www.aclweb.org/anthology/W04-3252.pdf
 
     :param graph: The graph we are running text rank on
-    :param dampening: A scalar between 0 and 1. Used to simulate randomly jumping from one vertex to another.
+    :param damping: A scalar between 0 and 1. Used to simulate randomly jumping from one vertex to another.
     :param convergence: An early stopping criteria, when any or all of the node scores change by less than `convergence`
         we stop updating the graph. Set to `0` to turn off early stopping.
     :param convergence_type: Should we stop when all nodes move less than `convergence` or when a single node does
@@ -162,14 +162,14 @@ def text_rank(
 
     :returns: Pairs of (node label, scores) sorted by score
     """
-    if not 0 <= dampening <= 1:
-        raise ValueError(f"dampening must be between `0` and `1`, got {dampening}")
+    if not 0 <= damping <= 1:
+        raise ValueError(f"damping must be between `0` and `1`, got {damping}")
     converge = all if convergence_type is ConvergenceType.ALL else any
 
     ws_prev, denom = text_rank_init(graph, uniform=uniform, seed=seed)
 
     for _ in range(niter):
-        ws = text_rank_update(graph, ws_prev, denom, dampening)
+        ws = text_rank_update(graph, ws_prev, denom, damping)
         if converge(abs(p - c) < convergence for p, c in zip(ws_prev, ws)):
             break
         ws_prev = ws
