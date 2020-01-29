@@ -155,12 +155,12 @@ def test_init_matrix_uniform():
 
 def test_update_list():
     graph = MagicMock(vertices=[MagicMock() for _ in range(random.randint(10, 100))])
-    dampening = random.random()
+    damping = random.random()
     golds = [random.random() for _ in graph.vertices]
-    update_values = [(g - 1 + dampening) / dampening for g in golds]
+    update_values = [(g - 1 + damping) / damping for g in golds]
     with patch("text_rank.text_rank_module.accumulate_score") as acc_patch:
         acc_patch.side_effect = update_values
-        ws = text_rank_update_list(graph, None, None, dampening)
+        ws = text_rank_update_list(graph, None, None, damping)
         for w, g in zip(ws, golds):
             math.isclose(w, g)
 
@@ -171,10 +171,10 @@ def test_update_matrix():
     adj = np.random.rand(verts, verts)
     denom = np.random.rand(verts, 1)
     graph = MagicMock(adjacency_matrix=adj)
-    dampening = np.random.rand()
-    gold = (1 - dampening) + dampening * np.sum(ws.reshape((-1, 1)) * (adj / denom), axis=0)
+    damping = np.random.rand()
+    gold = (1 - damping) + damping * np.sum(ws.reshape((-1, 1)) * (adj / denom), axis=0)
 
-    res = text_rank_update_matrix(graph, ws, denom, dampening)
+    res = text_rank_update_matrix(graph, ws, denom, damping)
 
     np.testing.assert_allclose(res, gold)
 
@@ -265,5 +265,5 @@ def test_text_rank_mining_massive_datasets():
     g.add_edge("D", "C")
     gold = np.array([3 / 9, 2 / 9, 2 / 9, 2 / 9])
 
-    scores = [x[1] for x in text_rank(g, dampening=1, convergence=0)]
+    scores = [x[1] for x in text_rank(g, damping=1, convergence=0)]
     np.testing.assert_allclose(scores, gold)

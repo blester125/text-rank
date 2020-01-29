@@ -34,7 +34,7 @@ def keywords(
     tokens: List[Dict[str, str]],
     nwords: Optional[int] = None,
     winsz: int = 2,
-    dampening: float = 0.85,
+    damping: float = 0.85,
     convergence: float = 0.0001,
     convergence_type: ConvergenceType = ConvergenceType.ANY,
     niter: int = 200,
@@ -52,7 +52,7 @@ def keywords(
         join adjacent ones so it might be possible to get fewer keywords back.
     :param winsz: The size of a window around each word that it can connect to. This window is calculated
         in the non-filtered token list.
-    :param dampening: A scalar between 0 and 1. Used to simulate randomly jumping from one vertex to another.
+    :param damping: A scalar between 0 and 1. Used to simulate randomly jumping from one vertex to another.
     :param convergence: An early stopping criteria, when any or all of the node scores change by less than `convergence`
         we stop updating the graph. Set to `0` to turn off early stopping.
     :param convergence_type: Should we stop when all nodes move less than `convergence` or when a single node does
@@ -87,7 +87,7 @@ def keywords(
     if nwords is None:
         nwords = len(tokens) // 3
     keywords = text_rank(
-        graph, dampening=dampening, convergence=convergence, convergence_type=convergence_type, niter=niter, seed=seed
+        graph, damping=damping, convergence=convergence, convergence_type=convergence_type, niter=niter, seed=seed
     )[:nwords]
     keywords = join_adjacent_keywords([kw[0] for kw in keywords], offsets)
     return keywords
